@@ -61,13 +61,13 @@ public class Panzergame {
       x=(int) (Math.random()*b);
       y=(int) (Math.random()*a);
       
-      for (int j=0;j<i;j++) {
+      for (int j=0;j<Aliste.length;j++) {
         if (x != Aliste[j][0] && y != Aliste[j][1]) {
           richtig +=1;
         } // end of if
       } // end of for
       
-      if (richtig==i) {
+      if (richtig==Aliste.length) {
         Hindernisliste[i]= new Hindernis(x,y);
         Aliste[i+z][0]=x;
         Aliste[i+z][1]=y;
@@ -81,59 +81,78 @@ public class Panzergame {
     Feld1.print();                                                              // Feld Ausgeben
     
     boolean exit= true;
-    //Spielbegin
-    while (exit) { 
+    
+    while (exit) {                                                              //Spielbegin
       
       System.out.println("Mit welchen Panzer möchten sie die nächste aktion ausführen?");
       System.out.println("Ihre Panzer:\n");
-      for (int i=1;i-1<Panzerliste.length;i++) {
-        System.out.println("Panzer Nummer ("+i+") an Position: "+Panzerliste[i-1].getPos().getPosh()+" - "+Panzerliste[i-1].getPos().getPosv());
+      
+      for (int i=1;i-1<Panzerliste.length;i++) {                                // Verfügbare Panzer anzeigen
+        if (Aliste[i-1][2]==1) {
+          System.out.println("Panzer Nummer ("+i+") an Position: "+Panzerliste[i-1].getPos().getPosh()+" - "+Panzerliste[i-1].getPos().getPosv());
+        } else {
+          System.out.println("Panzer Nummer ("+i+") zerstoert!");
+        } // end of if-else
       } // end of for
-      System.out.println("Panzernummer fuer die Auswahl eingeben.");
+      
+      System.out.print("\nPanzernummer fuer die Auswahl eingeben.");            // Panzer auswaehlen
       int  auswahl=input.nextInt();
       
-      System.out.println("Panzer bewegen(0) oder schießen(1)?");
+      for (int i=0;i<Panzerliste.length;i++) {                                  // Test, ob zerstoert
+        if (Aliste[auswahl-1][2]==2) {
+          System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
+          System.out.print("\nPanzernummer fuer die Auswahl eingeben.");
+          auswahl=input.nextInt();
+          i=0;
+        } // end of if
+      } // end of for
+      
+      System.out.print("Panzer bewegen(0) oder schießen(1)?");                  // Aktionsparameter eingeben
       int  action=input.nextInt();
-      
-      System.out.println("Richtung?(oben=0,rechts=1,unten=2,links=3)");
+      System.out.print("Richtung?(oben=0,rechts=1,unten=2,links=3)");
       int  richtung=input.nextInt();
-      
-      System.out.println("Kraft?");
+      System.out.print("Kraft? ");
       int  kraft=input.nextInt();
       
       switch (action) {
-        case  0: 
+        case  0:                                                                // Panzer bewegen
           Panzerliste[auswahl-1].move(richtung,kraft);
           Aliste[auswahl-1][0]=Panzerliste[auswahl-1].getPos().getPosh();
           Aliste[auswahl-1][1]=Panzerliste[auswahl-1].getPos().getPosv();
           break;
-        case  1: 
+        case  1:                                                                // Panzer schießen
           boolean treffer = false;
           Position ziel = new Position(Panzerliste[auswahl-1].shoot(richtung,kraft).getPosh(),Panzerliste[auswahl-1].shoot(richtung,kraft).getPosv());
           for (int i=0;i<Panzerliste.length;i++) {
             if (ziel.getPosh() == Panzerliste[i].getPos().getPosh() && ziel.getPosv() == Panzerliste[i].getPos().getPosv()) {
               treffer = true;
+              Aliste[i][2]=2;
               break;
             } // end of if
           } // end of for
-          if (treffer) {
-            System.out.println("Panzer getroffen!");
+          if (treffer) {                                                        // Treffer ausgabe
+            System.out.println("\nPanzer getroffen und zerstoert!");
           } else {
-            System.out.println("Nichts getroffen.");
+            System.out.println("\nNichts getroffen.");
           } // end of if-else
           break;      
         default: 
           
       } // end of switch
       
-      Feld1.print();
+      System.out.print("Aktuelles Spielfeld anzeigen? (ja=0): ");
+      int  feld=input.nextInt();
       
-      //System.out.println("Spiel beenden?(0)(1)");
-      //int  Iexit=input.nextInt();
+      if (feld==0) {
+        Feld1.print();
+      } // end of if
       
-      //if (Iexit==0) {
-      //  break;
-      //} // end of if
+      System.out.print("Spiel beenden? (ja=0): ");
+      int  Iexit=input.nextInt();
+      
+      if (Iexit==0) {
+        break;
+      } // end of if
     } // end of while
     
     
