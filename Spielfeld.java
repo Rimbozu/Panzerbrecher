@@ -28,6 +28,7 @@ class Spielfeld {
     return PListe.length;
   }
   
+  
   public void print(){
     String bild = new String();
     boolean test = false;
@@ -53,63 +54,74 @@ class Spielfeld {
     System.out.println(" +"+bild+"+");
     bild="";
     
+    int pl=0;
+    
     for (int i=0;i<getSeiteA();i++) {
       for (int j=0;j<getSeiteB();j++) {
         Position hier = new Position(i,j);
-        for (int p=0;p<getPListe();p++) {
-          if (hier.getPosh()==PListe[p][0] && hier.getPosv()==PListe[p][1]) {
-            test=true;
-            art=PListe[p][2];
-            break;
-          }
+          for (int t=0;t<getPListe();t++) {
+            if (hier.getPosh()==PListe[t][0] && hier.getPosv()==PListe[t][1]) {
+              test=true;
+              art=PListe[t][2];
+              pl=PListe[t][3];
+              break;
+            }
+          } // end of for
+          if (test) {
+            switch (art) {
+              case  1:  
+                switch (pl) {
+                  case  0: 
+                    bild = bild+"P";
+                    break;
+                  case  1: 
+                    bild = bild+"G";
+                    break; 
+                } // end of switch
+                break;
+              case  2: 
+                bild = bild+"H";
+                break;
+            } // end of switch
+            art=0;
+          } else {
+            bild = bild+" ";
+          } // end of if-else
+          test=false;
+          
         } // end of for
-        if (test) {
-          switch (art) {
-            case  1: 
-              bild = bild+"p";
-              break;
-            case  2: 
-              bild = bild+"h";
-              break;
-          } // end of switch
-          art=0;
+        
+        if (i%5==0) {
+          bild = i/5+"+" + bild +"+"+i/5;
         } else {
-          bild = bild+" ";
+          bild =" +" + bild + "+";
         } // end of if-else
-        test=false;
+        
+        
+        System.out.println(bild);
+        bild="";
       } // end of for
       
-      if (i%5==0) {
-        bild = i/5+"+" + bild +"+"+i/5;
-      } else {
-        bild =" +" + bild + "+";
-    } // end of if-else
-     
+      for (int i=0;i<getSeiteB();i++) {
+        bild=bild + "+";
+      } // end of for
       
-      System.out.println(bild);
-      bild="";
-    } // end of for
+      System.out.println(" +"+bild+"+");
+      
+      bild="  ";
+      
+      for (int i=0;i<getSeiteB();i++) {
+        if (i%5==0) {
+          bild = bild + i/5;
+        } else {
+          bild = bild + " ";
+        } // end of if-else
+      } // end of for
+      
+      System.out.println(bild+"\n");
+      
+    }
     
-    for (int i=0;i<getSeiteB();i++) {
-      bild=bild + "+";
-    } // end of for
     
-    System.out.println(" +"+bild+"+");
-    
-    bild="  ";
-    
-    for (int i=0;i<getSeiteB();i++) {
-      if (i%5==0) {
-        bild = bild + i/5;
-      } else {
-        bild = bild + " ";
-      } // end of if-else
-    } // end of for
-    
-    System.out.println(bild+"\n");
     
   }
-  
-  
-  
-}
