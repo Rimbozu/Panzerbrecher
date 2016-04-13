@@ -1,0 +1,72 @@
+class Spielfeld {
+  
+  private int [][] feld;
+  private Panzer [] PListe;
+  
+  public Spielfeld (){
+    this(20,50);
+  }
+  
+  public Spielfeld (int b, int a){
+    feld = new int [a][b];
+  }
+  
+  public Spielfeld (int b, int a, Panzer [] Liste){
+    this(a,b);
+    PListe = Liste;
+  }
+  
+  public int getSeiteA(){
+    return feld.length;
+  }
+    
+  public int getSeiteB(){
+    return feld[0].length;
+  }  
+  
+  public int getPListe(){
+    return PListe.length;
+  }
+  
+  public void print(){
+    String bild = new String();
+    boolean test = false;
+    
+    for (int i=0;i<getSeiteB();i++) {
+      bild=bild + "+";
+    } // end of for
+    
+    System.out.println("+"+bild+"+");
+    
+    bild="";
+    
+    for (int i=0;i<getSeiteA();i++) {
+      for (int j=0;j<getSeiteB();j++) {
+        Position hier = new Position(i,j);
+        for (int p=0;p<getPListe();p++) {
+          if (hier.getPosb()==PListe[p].getPos().getPosb() && hier.getPosa()==PListe[p].getPos().getPosa()) {
+            test=true;
+            break;
+          }
+        } // end of for
+        if (test) {
+          bild = bild+"p";
+        } else {
+          bild = bild+" ";
+        } // end of if-else
+        test=false;
+      } // end of for
+      System.out.println("+"+bild+"+");
+      bild="";
+    } // end of for
+    
+    for (int i=0;i<getSeiteB();i++) {
+      bild=bild + "+";
+    } // end of for
+    System.out.println("+"+bild+"+");
+    
+  }
+  
+  
+  
+}
