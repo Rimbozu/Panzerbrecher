@@ -1,23 +1,23 @@
 class Position{
   
-  private int b,a;
+  private int h,v;
   
   public Position(int x,int y){
-    b=x;
-    a=y;
+    h=x;
+    v=y;
   }
     
-  public int getPosb (){
-    return b;
+  public int getPosh (){
+    return h;
   }
-  public int getPosa (){
-    return a;
+  public int getPosv (){
+    return v;
   }  
   
-  public void setPosb (int x){
-    b+=x;
+  public void setPosh (int x){
+    h+=x;
   }
-  public void setPosa (int x){
-    a+=x;
+  public void setPosv (int x){
+    v+=x;
   }  
 }

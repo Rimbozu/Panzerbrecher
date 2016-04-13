@@ -45,7 +45,7 @@ class Spielfeld {
       for (int j=0;j<getSeiteB();j++) {
         Position hier = new Position(i,j);
         for (int p=0;p<getPListe();p++) {
-          if (hier.getPosb()==PListe[p][0] && hier.getPosa()==PListe[p][1]) {
+          if (hier.getPosh()==PListe[p][0] && hier.getPosv()==PListe[p][1]) {
             test=true;
             art=PListe[p][2];
             break;
