@@ -1,18 +1,24 @@
 class Panzer {
   
   private Position pos;
-  
-  public Panzer(){
-    this(5,5);
-  }
+  private int besitzer;
     
-  public Panzer(int b, int a){
+  public Panzer(int b, int a,int player){
     pos = new Position(b,a);
+    besitzer=player;
   }
     
   public Position getPos(){
     return pos;  
   } 
+  
+  public int getPlayer(){
+    return besitzer;
+  }
+  
+  public void setDestroy(){
+    besitzer=0;
+  }
   
   public void move(int r, int entf){
     switch (r) {

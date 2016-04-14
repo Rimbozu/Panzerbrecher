@@ -2,6 +2,9 @@ class Spielfeld {
   
   private int [][] feld;
   private int [][] PListe;
+  private Panzer [] PListe1;
+  private Panzer [] PListe2;
+  private Hindernis [] HListe;
   
   public Spielfeld (){
     this(20,50);
@@ -11,9 +14,11 @@ class Spielfeld {
     feld = new int [a][b];
   }
   
-  public Spielfeld (int b, int a, int [][] Liste){
+  public Spielfeld (int b, int a, Panzer [] Liste1, Panzer [] Liste2, Hindernis [] Liste3){
     this(a,b);
-    PListe = Liste;
+    PListe1 = Liste1;
+    PListe2 = Liste2;
+    HListe = Liste3;
   }
   
   public int getSeiteA(){
@@ -24,15 +29,22 @@ class Spielfeld {
     return feld[0].length;
   }  
   
-  public int getPListe(){
-    return PListe.length;
+  public int getPListe1(){
+    return PListe1.length;
   }
   
+  public int getPListe2(){
+    return PListe2.length;
+  }
+  
+  public int getHListe(){
+    return HListe.length;
+  }
   
   public void print(){
     String bild = new String();
     boolean test = false;
-    int art=0;
+    boolean belegt =false;
     
     bild="  ";
     
@@ -58,70 +70,80 @@ class Spielfeld {
     
     for (int i=0;i<getSeiteA();i++) {
       for (int j=0;j<getSeiteB();j++) {
+        belegt=false;
         Position hier = new Position(i,j);
-          for (int t=0;t<getPListe();t++) {
-            if (hier.getPosh()==PListe[t][0] && hier.getPosv()==PListe[t][1]) {
-              test=true;
-              art=PListe[t][2];
-              pl=PListe[t][3];
+        
+        for (int t=0;t<getPListe1();t++) {
+          if (hier.getPosh()==PListe1[t].getPos().getPosh() && hier.getPosv()==PListe1[t].getPos().getPosv()) {
+            if (PListe1[t].getPlayer()==0) {
+              bild = bild+"H";
+            } else {
+              bild = bild+"P";
+            } // end of if-else
+            belegt=true;
+            break;
+          }
+        } // end of for
+        
+        if (belegt == false) {
+          for (int t=0;t<getPListe2();t++) {
+            if (hier.getPosh()==PListe2[t].getPos().getPosh() && hier.getPosv()==PListe2[t].getPos().getPosv()) {
+              if (PListe1[t].getPlayer()==0) {
+                bild = bild+"H";
+              } else {
+                bild = bild+"G";
+              } // end of if-else
+              belegt=true;
               break;
             }
           } // end of for
-          if (test) {
-            switch (art) {
-              case  1:  
-                switch (pl) {
-                  case  0: 
-                    bild = bild+"P";
-                    break;
-                  case  1: 
-                    bild = bild+"G";
-                    break; 
-                } // end of switch
-                break;
-              case  2: 
-                bild = bild+"H";
-                break;
-            } // end of switch
-            art=0;
-          } else {
-            bild = bild+" ";
-          } // end of if-else
-          test=false;
-          
-        } // end of for
+        } // end of if
         
-        if (i%5==0) {
-          bild = i/5+"+" + bild +"+"+i/5;
-        } else {
-          bild =" +" + bild + "+";
-        } // end of if-else
+        if (belegt == false) {
+          for (int t=0;t<getHListe();t++) {
+            if (hier.getPosh()==HListe[t].getPos().getPosh() && hier.getPosv()==HListe[t].getPos().getPosv()) {
+              bild = bild+"H";
+              belegt=true;
+              break;
+            }
+          } // end of for
+        } // end of if
         
-        
-        System.out.println(bild);
-        bild="";
+        if (belegt == false) {
+          bild=bild+" ";
+        } // end of if
       } // end of for
       
-      for (int i=0;i<getSeiteB();i++) {
-        bild=bild + "+";
-      } // end of for
+      if (i%5==0) {
+        bild = i/5+"+" + bild +"+"+i/5;
+      } else {
+        bild =" +" + bild + "+";
+      } // end of if-else
       
-      System.out.println(" +"+bild+"+");
-      
-      bild="  ";
-      
-      for (int i=0;i<getSeiteB();i++) {
-        if (i%5==0) {
-          bild = bild + i/5;
-        } else {
-          bild = bild + " ";
-        } // end of if-else
-      } // end of for
-      
-      System.out.println(bild+"\n");
-      
-    }
+      System.out.println(bild);
+      bild="";
+    } // end of for
     
+    for (int i=0;i<getSeiteB();i++) {
+      bild=bild + "+";
+    } // end of for
     
+    System.out.println(" +"+bild+"+");
+    
+    bild="  ";
+    
+    for (int i=0;i<getSeiteB();i++) {
+      if (i%5==0) {
+        bild = bild + i/5;
+      } else {
+        bild = bild + " ";
+      } // end of if-else
+    } // end of for
+    
+    System.out.println(bild+"\n");
     
   }
+    
+    
+    
+}

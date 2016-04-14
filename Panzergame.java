@@ -10,13 +10,11 @@ public class Panzergame {
     System.out.println("Willkommen zum Panzerspiel.\n");
     
     boolean test= true;
-    int player=0,b,a,PAnz,HAnz,APanz=0;
-    int [][] Aliste;
+    int b,a,PAnz,HAnz,APanz=0;
     Hindernis [] Hindernisliste;
     Panzer [] PanzerlisteP1, PanzerlisteP2;
     
-    System.out.print("Spieleranzahl? ");                                        //Anzahl Mitspieler
-    player =input.nextInt();                                                       
+    System.out.print("2 Spieler Spielmodus");                                                                                        
     
     System.out.print("\nWie Breit soll das Spielfeld sein? ");                  //Spielfeldgröße abfragen
     b =input.nextInt();                                                      
@@ -28,75 +26,54 @@ public class Panzergame {
     System.out.print("Wie wie viele Hindernisse möchten sie haben? ");          //Hindernisse abfragen
     HAnz =input.nextInt();
     
-    PanzerlisteP1 = new Panzer[PAnz];
+    PanzerlisteP1 = new Panzer[PAnz];                                           //1. Inizialisieren
     PanzerlisteP2 = new Panzer[PAnz];
-    
-    
     Hindernisliste = new Hindernis[HAnz];
-    Aliste = new int[(2*PAnz)+HAnz][4];
     
+    Spielfeld Feld1 = new Spielfeld(b, a, PanzerlisteP1, PanzerlisteP2, Hindernisliste);               
     
-    Spielfeld Feld1 = new Spielfeld(b,a,Aliste);                                //Spielfeld inizialisieren           
-    
-    int x,y,z=0,srichtig=0;
+    int x,y,srichtig=0;
     boolean richtig = true;
     
     
-    for (int i=0;i<PAnz;i++) {                                                // Panzer Spieler 1 erzeugen
+    for (int i=0;i<PAnz;i++) {                                                  // Panzer Spieler 1 erzeugen
       
       x=(int) (Math.random()*b);
       y=(int) (Math.random()*a);
       
-      
-      for (int j=0;j<i;j++) {
-        if (x == Aliste[j][0] && y == Aliste[j][1]) {
-          richtig =false;
-        } // end of if
-      } // end of for
-      
+      richtig=checkListeP(x,y,i,PanzerlisteP1);
       if (richtig) {
-        PanzerlisteP1[i]= new Panzer(x,y);
-        Aliste[i][0]=x;
-        Aliste[i][1]=y;
-        Aliste[i][2]=1;
-        Aliste[i][3]=0;
-        z++;
+        PanzerlisteP1[i]= new Panzer(x,y,1);
       } else {
         i -=1;
-      } // end of if-else  
+      } // end of if-else 
+      
       richtig=true;
     } // end of for
     
-    int e1=z;
     richtig=true;
     x=y=0;
     
-    for (int i=0;i<PAnz;i++) {                                                // Panzer Spieler 2 erzeugen
+    for (int i=0;i<PAnz;i++) {                                                  // Panzer Spieler 2 erzeugen
       
       x=(int) (Math.random()*b);
       y=(int) (Math.random()*a);
       
-      
-      for (int j=0;j<(i+e1);j++) {
-        if (x == Aliste[j][0] && y == Aliste[j][1]) {
-          richtig =false;
-        } // end of if
-      } // end of for
-      
+      richtig=checkListeP(x,y,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
-        PanzerlisteP2[i]= new Panzer(x,y);
-        Aliste[i+e1][0]=x;
-        Aliste[i+e1][1]=y;
-        Aliste[i+e1][2]=1;
-        Aliste[i+e1][3]=1;
-        z++;
+        richtig=checkListeP(x,y,i,PanzerlisteP2);
+        if (richtig) {
+          PanzerlisteP2[i]= new Panzer(x,y,2);
+        } else {
+          i -=1;
+        } // end of if-else  
       } else {
         i -=1;
-      } // end of if-else  
+      } // end of if-else
+      
       richtig=true;
     } // end of for
     
-    int e2=z;
     richtig=true;
     x=y=0;
     
@@ -105,22 +82,23 @@ public class Panzergame {
       x=(int) (Math.random()*b);
       y=(int) (Math.random()*a);
       
-      for (int j=0;j<(i+e2);j++) {
-        if (x == Aliste[j][0] && y == Aliste[j][1]) {
-          richtig =false;
-        } // end of if
-      } // end of for
-      
-      
+      richtig=checkListeP(x,y,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
-        Hindernisliste[i]= new Hindernis(x,y);
-        Aliste[i+e2][0]=x;
-        Aliste[i+e2][1]=y;
-        Aliste[i+e2][2]=2;
-        Aliste[i+e2][3]=0;
+        richtig=checkListeP(x,y,PanzerlisteP2.length,PanzerlisteP2);
+        if (richtig) {
+          richtig=checkListeH(x,y,i,Hindernisliste);
+          if (richtig) {
+            Hindernisliste[i]= new Hindernis(x,y);
+          } else {
+            i -=1;
+          } // end of if-else
+        } else {
+          i -=1;
+        } // end of if-else
       } else {
         i -=1;
-      } // end of if-else  
+      } // end of if-else
+      
       richtig=true;
     } // end of for
     
@@ -136,7 +114,7 @@ public class Panzergame {
         Panzerliste1 = PanzerlisteP1;
         Panzerliste2 = PanzerlisteP2;
         System.out.println("\nSpieler 1 ist an der Reihe.");
-        } else {
+      } else {
         spieler = 1;
         Panzerliste1 = PanzerlisteP2;
         Panzerliste2 = PanzerlisteP1;
@@ -146,8 +124,8 @@ public class Panzergame {
       System.out.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");
       System.out.println("Ihre Panzer:\n");
       
-      for (int i=1;i-1<Panzerliste1.length;i++) {                                // Verfügbare Panzer anzeigen
-        if (Aliste[i-1][2]==1) {
+      for (int i=1;i-1<Panzerliste1.length;i++) {                               // Verfügbare Panzer anzeigen
+        if (Panzerliste1[i-1].getPlayer()!=0) {
           System.out.println("Panzer Nummer ("+i+") an Position: "+Panzerliste1[i-1].getPos().getPosh()+" - "+Panzerliste1[i-1].getPos().getPosv());
         } else {
           System.out.println("Panzer Nummer ("+i+") zerstoert!");
@@ -157,8 +135,8 @@ public class Panzergame {
       System.out.print("\nPanzernummer fuer die Auswahl eingeben.");            // Panzer auswaehlen
       int  auswahl=input.nextInt();
       
-      for (int i=0;i<Panzerliste1.length;i++) {                                  // Test, ob zerstoert
-        if (Aliste[auswahl-1][2]==2) {
+      for (int i=0;i<Panzerliste1.length;i++) {                                 // Test, ob zerstoert
+        if (Panzerliste1[i-1].getPlayer()==0) {
           System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
           System.out.print("\nPanzernummer fuer die Auswahl eingeben.");
           auswahl=input.nextInt();
@@ -176,16 +154,14 @@ public class Panzergame {
       switch (action) {
         case  0:                                                                // Panzer bewegen
           Panzerliste1[auswahl-1].move(richtung,kraft);
-          Aliste[auswahl-1][0]=Panzerliste1[auswahl-1].getPos().getPosh();
-          Aliste[auswahl-1][1]=Panzerliste1[auswahl-1].getPos().getPosv();
           break;
         case  1:                                                                // Panzer schießen
           boolean treffer = false;
           Position ziel = new Position(Panzerliste1[auswahl-1].shoot(richtung,kraft).getPosh(),Panzerliste1[auswahl-1].shoot(richtung,kraft).getPosv());
           for (int i=0;i<Panzerliste2.length;i++) {
-            if (ziel.getPosh() == Panzerliste2[i].getPos().getPosh() && ziel.getPosv() == Panzerliste2[i].getPos().getPosv()) {
+            if (ziel.getPosh() == Panzerliste2[i].getPos().getPosh() && ziel.getPosv() == Panzerliste2[i].getPos().getPosh()) {
               treffer = true;
-              Aliste[i][2]=2;
+              Panzerliste2[i].setDestroy();
               break;
             } // end of if
           } // end of for
@@ -216,6 +192,32 @@ public class Panzergame {
     
     
   } // end of main
-      
-} // end of class Panzergame
+              
+  public static boolean checkListeP(int x, int y, int Anz, Panzer [] PListe){
+    boolean erg = true;
     
+    for (int i=0;i<Anz;i++) {
+      if (x == PListe[i].getPos().getPosh() && y == PListe[i].getPos().getPosv()) {
+        erg = false;
+      } // end of if
+    } // end of for
+    
+    return erg;
+    
+  }
+              
+  public static boolean checkListeH(int x, int y, int Anz, Hindernis [] HListe){
+    boolean erg = true;
+    
+    for (int i=0;i<Anz;i++) {
+      if (x == HListe[i].getPos().getPosh() && y == HListe[i].getPos().getPosv()) {
+        erg = false;
+      } // end of if
+    } // end of for
+    
+    return erg;
+    
+  } 
+              
+} // end of class Panzergame
+            
