@@ -103,96 +103,162 @@ public class Panzergame {
     } // end of for
     
     Feld1.print();                                                              // Feld Ausgeben
-    
+    int spiel=0;
     while (true) {                                                              //Spielbegin
-      int spiel =1;
-      int spieler;
-      Panzer [] Panzerliste1;
-      Panzer [] Panzerliste2;
+      boolean exit = false;
+      spiel+=1; 
+      int spieler,auswahl=0;
+      
       if (spiel%2==1) {
-        spieler = 0;
-        Panzerliste1 = PanzerlisteP1;
-        Panzerliste2 = PanzerlisteP2;
-        System.out.println("\nSpieler 1 ist an der Reihe.");
-      } else {
         spieler = 1;
-        Panzerliste1 = PanzerlisteP2;
-        Panzerliste2 = PanzerlisteP1;
-        System.out.println("\nSpieler 2 ist an der Reihe.");
+      } else {
+        spieler = 2;
       } // end of if-else
       
+      System.out.println("\nSpieler "+spieler+" ist an der Reihe.");
       System.out.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");
       System.out.println("Ihre Panzer:\n");
       
-      for (int i=1;i-1<Panzerliste1.length;i++) {                               // Verfügbare Panzer anzeigen
-        if (Panzerliste1[i-1].getPlayer()!=0) {
-          System.out.println("Panzer Nummer ("+i+") an Position: "+Panzerliste1[i-1].getPos().getPosh()+" - "+Panzerliste1[i-1].getPos().getPosv());
-        } else {
-          System.out.println("Panzer Nummer ("+i+") zerstoert!");
-        } // end of if-else
-      } // end of for
-      
-      System.out.print("\nPanzernummer fuer die Auswahl eingeben.");            // Panzer auswaehlen
-      int  auswahl=input.nextInt();
-      
-      for (int i=0;i<Panzerliste1.length;i++) {                                 // Test, ob zerstoert
-        if (Panzerliste1[i-1].getPlayer()==0) {
-          System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
-          System.out.print("\nPanzernummer fuer die Auswahl eingeben.");
-          auswahl=input.nextInt();
-          i=0;
-        } // end of if
-      } // end of for
+      if (spiel%2==1) {
+        for (int i=1;i-1<PanzerlisteP1.length;i++) {                            // Verfügbare Panzer1 anzeigen
+          if (PanzerlisteP1[i-1].getPlayer()!=0) {
+            System.out.println("Panzer Nummer ("+i+") an Position: "+PanzerlisteP1[i-1].getPos().getPosh()+" - "+PanzerlisteP1[i-1].getPos().getPosv());
+          } else {
+            System.out.println("Panzer Nummer ("+i+") zerstoert!");
+          } // end of if-else
+        } // end of for
+        
+        System.out.print("\nPanzernummer fuer die Auswahl eingeben.");          // Panzer auswaehlen
+        auswahl=input.nextInt();
+        
+        for (int i=0;i<PanzerlisteP1.length;i++) {                              // Test, ob zerstoert
+          if (PanzerlisteP1[auswahl-1].getPlayer()==0) {
+            System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
+            System.out.print("\nPanzernummer fuer die Auswahl eingeben.");
+            auswahl=input.nextInt();
+            i=0;
+          } // end of if
+        } // end of for
+      } else {
+        for (int i=1;i-1<PanzerlisteP2.length;i++) {                            // Verfügbare Panzer2 anzeigen
+          if (PanzerlisteP2[i-1].getPlayer()!=0) {
+            System.out.println("Panzer Nummer ("+i+") an Position: "+PanzerlisteP2[i-1].getPos().getPosh()+" - "+PanzerlisteP2[i-1].getPos().getPosv());
+          } else {
+            System.out.println("Panzer Nummer ("+i+") zerstoert!");
+          } // end of if-else
+        } // end of for
+        
+        System.out.print("\nPanzernummer fuer die Auswahl eingeben.");          // Panzer auswaehlen
+        auswahl=input.nextInt();
+        
+        for (int i=0;i<PanzerlisteP2.length;i++) {                              // Test, ob zerstoert
+          if (PanzerlisteP2[auswahl-1].getPlayer()==0) {
+             
+            System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
+            System.out.print("\nPanzernummer fuer die Auswahl eingeben.");
+            auswahl=input.nextInt();
+            i=0;
+          } // end of if
+        } // end of for
+      } // end of if-else
       
       System.out.print("Panzer bewegen(0) oder schießen(1)?");                  // Aktionsparameter eingeben
       int  action=input.nextInt();
-      System.out.print("Richtung?(oben=0,rechts=1,unten=2,links=3)");
+      System.out.print("Richtung?(Numpad Richtig Bsp 9: oben rechts)");
       int  richtung=input.nextInt();
       System.out.print("Kraft? ");
       int  kraft=input.nextInt();
       
-      switch (action) {
-        case  0:                                                                // Panzer bewegen
-          Panzerliste1[auswahl-1].move(richtung,kraft);
-          break;
-        case  1:                                                                // Panzer schießen
-          boolean treffer = false;
-          Position ziel = new Position(Panzerliste1[auswahl-1].shoot(richtung,kraft).getPosh(),Panzerliste1[auswahl-1].shoot(richtung,kraft).getPosv());
-          for (int i=0;i<Panzerliste2.length;i++) {
-            if (ziel.getPosh() == Panzerliste2[i].getPos().getPosh() && ziel.getPosv() == Panzerliste2[i].getPos().getPosh()) {
-              treffer = true;
-              Panzerliste2[i].setDestroy();
-              break;
-            } // end of if
-          } // end of for
-          if (treffer) {                                                        // Treffer ausgabe
-            System.out.println("\nPanzer getroffen und zerstoert!");
-          } else {
-            System.out.println("\nNichts getroffen.");
-          } // end of if-else
-          break;      
-        default: 
-          
-      } // end of switch
+      if (spiel%2==1) {
+        switch (action) {
+          case  0:                                                              // Panzer bewegen
+            PanzerlisteP1[auswahl-1].move(richtung,kraft);
+            break;
+          case  1:                                                              // Panzer schießen
+            boolean treffer = false;
+            Position ziel = new Position(PanzerlisteP1[auswahl-1].shoot(richtung,kraft).getPosh(),PanzerlisteP1[auswahl-1].shoot(richtung,kraft).getPosv());
+            for (int i=0;i<PanzerlisteP2.length;i++) {
+              if (ziel.getPosh() == PanzerlisteP2[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP2[i].getPos().getPosv()) {
+                treffer = true;
+                PanzerlisteP2[i].setDestroy();
+                break;
+              } // end of if
+            } // end of for
+            
+            if (treffer) {                                                      // Treffer ausgabe
+              System.out.println("\nPanzer getroffen und zerstoert!");
+            } else {
+              System.out.println("\nNichts getroffen.");
+            } // end of if-else
+            break;      
+            
+        } // end of switch
+      } else {
+        switch (action) {
+          case  0:                                                              // Panzer bewegen
+            PanzerlisteP2[auswahl-1].move(richtung,kraft);
+            break;
+          case  1:                                                              // Panzer schießen
+            boolean treffer = false;
+            Position ziel = new Position(PanzerlisteP2[auswahl-1].shoot(richtung,kraft).getPosh(),PanzerlisteP2[auswahl-1].shoot(richtung,kraft).getPosv());
+            for (int i=0;i<PanzerlisteP1.length;i++) {
+              if (ziel.getPosh() == PanzerlisteP1[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP1[i].getPos().getPosv()) {
+                treffer = true;
+                PanzerlisteP1[i].setDestroy();
+                break;
+              } // end of if
+            } // end of for
+            
+            if (treffer) {                                                      // Treffer ausgabe
+              System.out.println("\nPanzer getroffen und zerstoert!");
+            } else {
+              System.out.println("\nNichts getroffen.");
+            } // end of if-else
+            break;      
+
+        } // end of switch
+      } // end of if-else
       
-      System.out.print("Aktuelles Spielfeld anzeigen? (ja=0): ");
+      System.out.print("Aktuelles Spielfeld anzeigen? (ja=1): ");
       int  feld=input.nextInt();
       
-      if (feld==0) {
+      if (feld==1) {
         Feld1.print();
-      } // end of if
-      
-      System.out.print("Spiel beenden? (ja=0): ");
-      int  Iexit=input.nextInt();
-      
-      if (Iexit==0) {
+      } // end of if 
+      int destroy=0;
+      if (spiel%2==1) {
+        for (int i=0;i<PanzerlisteP2.length;i++) {    
+          if (PanzerlisteP2[i].getPlayer()==0) {
+            destroy+=1;
+          } // end of if
+          if (destroy==PanzerlisteP2.length) {
+            System.out.println("Der Gegner wurde besiegt. Spieler Nr. 1 hat gewonnen");
+            exit=true;
+            break;
+          } // end of if
+        } // end of for
+      } else {
+        for (int i=0;i<PanzerlisteP1.length;i++) {    
+          if (PanzerlisteP1[i].getPlayer()==0) {
+            destroy+=1;
+          } // end of if
+          if (destroy==PanzerlisteP2.length) {
+            System.out.println("Der Gegner wurde besiegt. Spieler Nr. 2 hat gewonnen");
+            exit=true;
+            break;
+          } // end of if
+        }
+      } // end of if-else
+        
+      destroy=0;
+         
+      if (exit) {
         break;
       } // end of if
+  
     } // end of while
-    
-    
   } // end of main
-              
+    
   public static boolean checkListeP(int x, int y, int Anz, Panzer [] PListe){
     boolean erg = true;
     
@@ -204,9 +270,9 @@ public class Panzergame {
     
     return erg;
     
-  }
-              
-  public static boolean checkListeH(int x, int y, int Anz, Hindernis [] HListe){
+    }
+    
+    public static boolean checkListeH(int x, int y, int Anz, Hindernis [] HListe){
     boolean erg = true;
     
     for (int i=0;i<Anz;i++) {
@@ -217,7 +283,7 @@ public class Panzergame {
     
     return erg;
     
-  } 
-              
-} // end of class Panzergame
-            
+    } 
+    
+    } // end of class Panzergame
+  

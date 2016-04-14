@@ -88,7 +88,7 @@ class Spielfeld {
         if (belegt == false) {
           for (int t=0;t<getPListe2();t++) {
             if (hier.getPosh()==PListe2[t].getPos().getPosh() && hier.getPosv()==PListe2[t].getPos().getPosv()) {
-              if (PListe1[t].getPlayer()==0) {
+              if (PListe2[t].getPlayer()==0) {
                 bild = bild+"H";
               } else {
                 bild = bild+"G";
