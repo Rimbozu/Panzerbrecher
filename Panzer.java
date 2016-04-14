@@ -1,11 +1,14 @@
 class Panzer {
   
   private Position pos;
-  private int besitzer;
+  private int besitzer, hp, damage;
+  
     
   public Panzer(int b, int a,int player){
     pos = new Position(b,a);
     besitzer=player;
+    hp=10;
+    damage=5;
   }
     
   public Position getPos(){
@@ -16,8 +19,17 @@ class Panzer {
     return besitzer;
   }
   
-  public void setDestroy(){
-    besitzer=0;
+  public int getHP(){
+    return hp;
+  }
+  
+  public int getDamage(){
+    return damage;
+  }
+  
+  
+  public void setHP(int dmg){
+    hp -= dmg;
   }
   
   public void move(int r, int entf){

@@ -75,10 +75,14 @@ class Spielfeld {
         
         for (int t=0;t<getPListe1();t++) {
           if (hier.getPosh()==PListe1[t].getPos().getPosh() && hier.getPosv()==PListe1[t].getPos().getPosv()) {
-            if (PListe1[t].getPlayer()==0) {
-              bild = bild+"H";
+            if (PListe1[t].getHP()<=0) {
+              bild = bild+"h";
             } else {
-              bild = bild+"P";
+              if (PListe1[t].getHP()==10) {
+                bild = bild+"A";
+              } else {
+                bild = bild+"a";
+              } // end of if-else
             } // end of if-else
             belegt=true;
             break;
@@ -88,10 +92,14 @@ class Spielfeld {
         if (belegt == false) {
           for (int t=0;t<getPListe2();t++) {
             if (hier.getPosh()==PListe2[t].getPos().getPosh() && hier.getPosv()==PListe2[t].getPos().getPosv()) {
-              if (PListe2[t].getPlayer()==0) {
-                bild = bild+"H";
+              if (PListe2[t].getHP()<=0) {
+                bild = bild+"h";
               } else {
-                bild = bild+"G";
+                if (PListe2[t].getHP()==10) {
+                  bild = bild+"B";
+                } else {
+                  bild = bild+"b";
+                } // end of if-else
               } // end of if-else
               belegt=true;
               break;
