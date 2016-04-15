@@ -10,12 +10,12 @@ class Spielfeld {
     this(20,50);
   }
   
-  public Spielfeld (int b, int a){
-    feld = new int [a][b];
+  public Spielfeld (int v, int h){
+    feld = new int [v][h];
   }
   
-  public Spielfeld (int b, int a, Panzer [] Liste1, Panzer [] Liste2, Hindernis [] Liste3){
-    this(a,b);
+  public Spielfeld (int v, int h, Panzer [] Liste1, Panzer [] Liste2, Hindernis [] Liste3){
+    this(v,h);
     PListe1 = Liste1;
     PListe2 = Liste2;
     HListe = Liste3;

@@ -2,9 +2,9 @@ class Position{
   
   private int h,v;
   
-  public Position(int x,int y){
-    h=x;
-    v=y;
+  public Position(int h,int v){
+    this.h=h;
+    this.v=v;
   }
     
   public int getPosh (){
@@ -14,10 +14,10 @@ class Position{
     return v;
   }  
   
-  public void setPosh (int x){
-    h+=x;
+  public void addPosh (int a){
+    h+=a;
   }
-  public void setPosv (int x){
-    v+=x;
+  public void addPosv (int a){
+    v+=a;
   }  
-}
+}          
