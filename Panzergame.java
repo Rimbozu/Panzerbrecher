@@ -104,7 +104,7 @@ public class Panzergame {
     
     Feld1.print();                                                              // Feld Ausgeben
     int spiel=0;
-    while (true) {                                                              //Spielbegin
+    while (true) {                                                              // Spielbegin
       boolean exit = false;
       spiel+=1; 
       int spieler,auswahl=0;
@@ -122,7 +122,7 @@ public class Panzergame {
       if (spiel%2==1) {
         for (int i=1;i-1<PanzerlisteP1.length;i++) {                            // Verfügbare Panzer1 anzeigen
           if (PanzerlisteP1[i-1].getHP()>0) {
-            System.out.println("Panzer Nummer ("+i+") an Position: "+PanzerlisteP1[i-1].getPos().getPosh()+" - "+PanzerlisteP1[i-1].getPos().getPosv()+", HP: "+PanzerlisteP1[i-1].getHP()+", DMG: "+PanzerlisteP1[i-1].getDamage());
+            System.out.println("Pz "+i+", Position: ("+PanzerlisteP1[i-1].getPos().getPosh()+")("+PanzerlisteP1[i-1].getPos().getPosv()+"), HP: "+PanzerlisteP1[i-1].getHP()+", DMG: "+PanzerlisteP1[i-1].getDamage());
           } else {
             System.out.println("Panzer Nummer ("+i+") zerstoert!");
           } // end of if-else
@@ -142,7 +142,7 @@ public class Panzergame {
       } else {
         for (int i=1;i-1<PanzerlisteP2.length;i++) {                            // Verfügbare Panzer2 anzeigen
           if (PanzerlisteP2[i-1].getHP()>0) {
-            System.out.println("Panzer Nummer ("+i+") an Position: "+PanzerlisteP2[i-1].getPos().getPosh()+" - "+PanzerlisteP2[i-1].getPos().getPosv()+", HP: "+PanzerlisteP2[i-1].getHP()+", DMG: "+PanzerlisteP2[i-1].getDamage());
+            System.out.println("Pz "+i+", Position: ("+PanzerlisteP2[i-1].getPos().getPosh()+")("+PanzerlisteP2[i-1].getPos().getPosv()+"), HP: "+PanzerlisteP2[i-1].getHP()+", DMG: "+PanzerlisteP2[i-1].getDamage());
           } else {
             System.out.println("Panzer Nummer ("+i+") zerstoert!");
           } // end of if-else
@@ -169,23 +169,78 @@ public class Panzergame {
       System.out.print("Kraft? ");
       int  kraft=input.nextInt();
       
-      if (spiel%2==1) {
+      Position ziel;
+      boolean treffer=false;
+      int h=0,p=0, pz=0;
+      
+      if (spiel%2==1) {                                                         // Spieler 1 Anweisungen
         switch (action) {
           case  0:                                                              // Panzer bewegen
-            PanzerlisteP1[auswahl-1].move(richtung,kraft);
+            for (int k=1;k<=kraft;k++) {
+              ziel = new Position(PanzerlisteP1[auswahl-1].target(richtung,k).getPosh(),PanzerlisteP1[auswahl-1].target(richtung,k).getPosv());
+              for (int i=0;i<Hindernisliste.length;i++) {
+                if (ziel.getPosh() == Hindernisliste[i].getPos().getPosh() && ziel.getPosv() == Hindernisliste[i].getPos().getPosv()) {
+                  treffer=true;
+                  h=k;
+                  break;
+                } // end of if
+              } // end of for
+              
+              for (int i=0;i<PanzerlisteP2.length;i++) {
+                if (ziel.getPosh() == PanzerlisteP2[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP2[i].getPos().getPosv()) {
+                  treffer=true;
+                  pz=i;
+                  p=k;
+                  break;
+                } // end of if
+              } // end of for
+              
+              if (treffer) {
+                if (h>0 && h<p || p>0 && h>0 && h<p || p==0) {
+                  PanzerlisteP1[auswahl-1].move(richtung,h-1);
+                  PanzerlisteP1[auswahl-1].setHP(kraft/2);
+                  System.out.println("Du bist gegen ein Hindernis Gefahren und hast "+kraft/2+" Schaden genommen!");
+                  if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                    System.out.println("Eigener Panzer wurde zerstoert!");
+                  } // end of if
+                } else {
+                  PanzerlisteP1[auswahl-1].move(richtung,p-1);
+                  PanzerlisteP1[auswahl-1].setHP(kraft/3);
+                  PanzerlisteP2[pz].setHP(kraft/2);
+                  System.out.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
+                  System.out.println("Der gegnerische Panzer hat "+kraft/2+" Schaden genommen!");
+                  if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                    System.out.println("Eigener Panzer wurde zerstoert!");
+                  } // end of if
+                  if (PanzerlisteP2[pz].getHP()<=0) {
+                    System.out.println("Gegnerischer Panzer wurde zerstoert!");
+                  } // end of if
+                } // end of if-else
+                break;
+              } // end of if
+            } // end of for
+            
+            if (treffer == false) {
+              PanzerlisteP1[auswahl-1].move(richtung,kraft);
+            } // end of if
+            
             break;
           case  1:                                                              // Panzer schießen
-            boolean treffer = false;
-            Position ziel = new Position(PanzerlisteP1[auswahl-1].shoot(richtung,kraft).getPosh(),PanzerlisteP1[auswahl-1].shoot(richtung,kraft).getPosv());
-            for (int i=0;i<PanzerlisteP2.length;i++) {
-              if (ziel.getPosh() == PanzerlisteP2[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP2[i].getPos().getPosv()) {
-                treffer = true;
-                PanzerlisteP2[i].setHP(PanzerlisteP1[auswahl-1].getDamage());;
-                
-                System.out.println("\nPanzer getroffen und "+PanzerlisteP1[auswahl-1].getDamage()+" Schaden gemacht.");                      
-                if (PanzerlisteP2[i].getHP()==0) {
-                  System.out.println("Panzer erfolgreich zerstoert!");
+            for (int k=1;k<=kraft;k++) {
+              ziel = new Position(PanzerlisteP1[auswahl-1].target(richtung,k).getPosh(),PanzerlisteP1[auswahl-1].target(richtung,k).getPosv());
+              for (int i=0;i<PanzerlisteP2.length;i++) {
+                if (ziel.getPosh() == PanzerlisteP2[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP2[i].getPos().getPosv()) {
+                  treffer = true;
+                  PanzerlisteP2[i].setHP(PanzerlisteP1[auswahl-1].getDamage()*k/kraft);
+                  
+                  System.out.println("\nPanzer getroffen und "+PanzerlisteP1[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");                      
+                  if (PanzerlisteP2[i].getHP()==0) {
+                    System.out.println("Panzer erfolgreich zerstoert!");
+                  } // end of if
+                  break;
                 } // end of if
+              } // end of for
+              if (treffer) {
                 break;
               } // end of if
             } // end of for
@@ -196,23 +251,74 @@ public class Panzergame {
             break;      
             
         } // end of switch
-      } else {
+      } else {                                                                  // Spieler 2 Anweisungen
         switch (action) {
           case  0:                                                              // Panzer bewegen
-            PanzerlisteP2[auswahl-1].move(richtung,kraft);
+            for (int k=1;k<=kraft;k++) {
+              ziel = new Position(PanzerlisteP2[auswahl-1].target(richtung,k).getPosh(),PanzerlisteP2[auswahl-1].target(richtung,k).getPosv());
+              for (int i=0;i<Hindernisliste.length;i++) {
+                if (ziel.getPosh() == Hindernisliste[i].getPos().getPosh() && ziel.getPosv() == Hindernisliste[i].getPos().getPosv()) {
+                  treffer=true;
+                  h=k;
+                  break;
+                } // end of if
+              } // end of for
+              
+              for (int i=0;i<PanzerlisteP1.length;i++) {
+                if (ziel.getPosh() == PanzerlisteP1[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP1[i].getPos().getPosv()) {
+                  treffer=true;
+                  p=k;
+                  pz=i;
+                  break;
+                } // end of if
+              } // end of for
+              
+              if (treffer) {
+                if (h>0 && h<p || p>0 && h>0 && h<p || p==0) {
+                  PanzerlisteP2[auswahl-1].move(richtung,h-1);
+                  PanzerlisteP2[auswahl-1].setHP(kraft/2);
+                  System.out.println("Du bist gegen ein Hindernis Gefahren und hast "+kraft/2+" Schaden genommen!");
+                  if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                    System.out.println("Eigener Panzer wurde zerstoert!");
+                  } // end of if
+                } else {
+                  PanzerlisteP2[auswahl-1].move(richtung,p-1);
+                  PanzerlisteP2[auswahl-1].setHP(kraft/3);
+                  PanzerlisteP1[pz].setHP(kraft/2);
+                  System.out.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
+                  System.out.println("Der gegnerische Panzer hat "+kraft/2+" Schaden genommen!");
+                  if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                    System.out.println("Eigener Panzer wurde zerstoert!");
+                  } // end of if
+                  if (PanzerlisteP1[pz].getHP()<=0) {
+                    System.out.println("Gegnerischer Panzer wurde zerstoert!");
+                  } // end of if
+                } // end of if-else
+                break;
+              } // end of if
+            } // end of for
+            
+            if (treffer == false) {
+              PanzerlisteP2[auswahl-1].move(richtung,kraft);
+            } // end of if
+            
             break;
           case  1:                                                              // Panzer schießen
-            boolean treffer = false;
-            Position ziel = new Position(PanzerlisteP2[auswahl-1].shoot(richtung,kraft).getPosh(),PanzerlisteP2[auswahl-1].shoot(richtung,kraft).getPosv());
-            for (int i=0;i<PanzerlisteP1.length;i++) {
-              if (ziel.getPosh() == PanzerlisteP1[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP1[i].getPos().getPosv()) {
-                treffer = true;
-                PanzerlisteP1[i].setHP(PanzerlisteP2[auswahl-1].getDamage());
-                
-                System.out.println("\nPanzer getroffen.");
-                if (PanzerlisteP1[i].getHP()==0) {
-                  System.out.println(" und zerstoert!");
+            for (int k=1;k<=kraft;k++ ) {
+              ziel = new Position(PanzerlisteP2[auswahl-1].target(richtung,k).getPosh(),PanzerlisteP2[auswahl-1].target(richtung,k).getPosv());
+              for (int i=0;i<PanzerlisteP1.length;i++) {
+                if (ziel.getPosh() == PanzerlisteP1[i].getPos().getPosh() && ziel.getPosv() == PanzerlisteP1[i].getPos().getPosv()) {
+                  treffer = true;
+                  PanzerlisteP1[i].setHP(PanzerlisteP2[auswahl-1].getDamage()*k/kraft);
+                  
+                  System.out.println("\nPanzer getroffen und "+PanzerlisteP2[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");
+                  if (PanzerlisteP1[i].getHP()==0) {
+                    System.out.println(" und zerstoert!");
+                  } // end of if
+                  break;
                 } // end of if
+              } // end of for
+              if (treffer) {
                 break;
               } // end of if
             } // end of for

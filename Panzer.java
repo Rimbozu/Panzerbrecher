@@ -66,7 +66,7 @@ class Panzer {
     } // end of switch
   }
   
-  public Position shoot(int r,int entf){
+  public Position target(int r,int entf){
     Position ziel = new Position(0,0);
     switch (r) {
       case  8: 
