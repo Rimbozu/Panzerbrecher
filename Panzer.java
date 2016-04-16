@@ -1,14 +1,14 @@
 class Panzer {
   
   private Position pos;
-  private int besitzer, hp, damage;
+  private Panzertyp typ;
+  private int besitzer;
   
     
-  public Panzer(int h, int v,int player){
+  public Panzer(int h, int v,int player, int typ){
     pos = new Position(h,v);
     besitzer=player;
-    hp=10;
-    damage=5;
+    this.typ = new Panzertyp(typ);
   }
     
   public Position getPos(){
@@ -19,18 +19,9 @@ class Panzer {
     return besitzer;
   }
   
-  public int getHP(){
-    return hp;
-  }
-  
-  public int getDamage(){
-    return damage;
-  }
-  
-  
-  public void subHP(int dmg){
-    hp -= dmg;
-  }
+  public Panzertyp getTyp(){
+    return typ;  
+  } 
   
   public void move(int r, int entf){
     switch (r) {

@@ -10,7 +10,8 @@ public class Panzergame {
     System.out.println("Willkommen zum Panzerspiel.\n");
     
     boolean test= true,richtig=true;
-    int b,a,PAnz,HAnz,APanz=0,h,v,spiel=0 ,srichtig=0, hi=0;
+    int b=0,a=0,c,PAnz,HAnz,APanz=0,h,v,spiel=0 ,srichtig=0, hi=0;
+    int PPunkte,T1Punkte,T2Punkte,T1,T2;
     
     Hindernis [] Hindernisliste;
     Panzer [] PanzerlisteP1, PanzerlisteP2;
@@ -20,33 +21,55 @@ public class Panzergame {
     int [] pg = new int [2];
     int [] pf = new int [2];
     
-    System.out.print("2 Spieler Spielmodus");                                                                                        
+    System.out.print("2 Spieler Spielmodus"); 
     
-    System.out.print("\nWie Breit soll das Spielfeld sein? ");                  //Spielfeldgröße abfragen
-    b =input.nextInt();                                                      
-    System.out.print("Wie Lang soll das Spielfeld sein? ");
-    a =input.nextInt();
+    System.out.println("\nWie Breit soll das Spielfeld sein? ");                //Spielfeldgröße abfragen 
+    b=FeldParameter(5,15,input);                                                                      
     
-    System.out.print("\nWie wie viele Panzer möchten sie haben? ");             //Panzeranzahl abfragen
-    PAnz =input.nextInt();
-    System.out.print("Wie wie viele Hindernisse möchten sie haben? ");          //Hindernisse abfragen
-    HAnz =input.nextInt();
+    System.out.println("Wie Lang soll das Spielfeld sein? ");
+    a=FeldParameter(5,40,input);
     
-    PanzerlisteP1 = new Panzer[PAnz];                                           //1. Inizialisieren
-    PanzerlisteP2 = new Panzer[PAnz];
+    c=a*b;
+    
+    System.out.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)");             //Panzeranzahl abfragen
+    PAnz=FeldParameter(1,c/20,input);
+    
+    PPunkte=c/PAnz*80;
+    T1Punkte=PPunkte/PAnz*1;
+    T2Punkte=PPunkte/PAnz*2;
+    
+    System.out.println("\nPanzertypen auswählen ("+PPunkte+" Punkte zu vergeben):");
+    System.out.println("Typ 1("+T1Punkte+" Punkte): Normale Panzer, 10 HP, 5 DMG");
+    System.out.println("Typ 2("+T2Punkte+" Punkte): Schwerer Panzer, 20 HP, 10 DMG\n");
+    
+    System.out.println("Anzahl Typ 1 Panzer:");
+    T1=FeldParameter(0,PPunkte/T1Punkte,input);
+    System.out.println(PPunkte-T1*T1Punkte+" Punkte noch vorhanden");
+    System.out.println("Anzahl Typ 2 Panzer:");
+    T2=FeldParameter((PPunkte-T1*T1Punkte)/T2Punkte,(PPunkte-T1*T1Punkte)/T2Punkte,input);
+    
+    System.out.println("\nWie wie viele Hindernisse möchten sie haben? ");          //Hindernisse abfragen
+    HAnz=FeldParameter(0,c/10,input);
+    
+    PanzerlisteP1 = new Panzer[T1+T2];                                           //1. Inizialisieren
+    PanzerlisteP2 = new Panzer[T1+T2];
     Hindernisliste = new Hindernis[HAnz];
     
     Spielfeld Feld1 = new Spielfeld(b, a, PanzerlisteP1, PanzerlisteP2, Hindernisliste);               
     
-    
-    
-    for (int i=0;i<PAnz;i++) {                                                  // Panzer Spieler 1 erzeugen
+    for (int i=0;i<PanzerlisteP1.length;i++) {                                                  // Panzer Spieler 1 erzeugen
       h=(int) (Math.random()*b);
       v=(int) (Math.random()*a);
       
       richtig=checkListeP(h,v,i,PanzerlisteP1);
       if (richtig) {
-        PanzerlisteP1[i]= new Panzer(h,v,1);
+        
+        if (i+1<=T1) {
+          PanzerlisteP1[i]= new Panzer(h,v,1,0);
+        } else {
+          PanzerlisteP1[i]= new Panzer(h,v,1,1);
+        } // end of if-else
+        
       } else {
         i -=1;
       } // end of if-else 
@@ -56,7 +79,7 @@ public class Panzergame {
     richtig=true;
     h=v=0;
     
-    for (int i=0;i<PAnz;i++) {                                                  // Panzer Spieler 2 erzeugen
+    for (int i=0;i<PanzerlisteP2.length;i++) {                                  // Panzer Spieler 2 erzeugen
       h=(int) (Math.random()*b);
       v=(int) (Math.random()*a);
       
@@ -64,7 +87,12 @@ public class Panzergame {
       if (richtig) {
         richtig=checkListeP(h,v,i,PanzerlisteP2);
         if (richtig) {
-          PanzerlisteP2[i]= new Panzer(h,v,2);
+          if (i+1<=T1) {
+            PanzerlisteP2[i]= new Panzer(h,v,2,0);
+          } else {
+            PanzerlisteP2[i]= new Panzer(h,v,2,1);
+          } // end of if-else
+          
         } else {
           i -=1;
         } // end of if-else  
@@ -106,6 +134,8 @@ public class Panzergame {
       boolean exit = false;
       spiel+=1; 
       int spieler,auswahl=0;
+      hi=pg[0]=pg[1]=pf[0]=pf[1]=0;
+      
       
       if (spiel%2==1) {
         spieler = 1;
@@ -119,8 +149,8 @@ public class Panzergame {
       
       if (spiel%2==1) {
         for (int i=1;i-1<PanzerlisteP1.length;i++) {                            // Verfügbare Panzer1 anzeigen
-          if (PanzerlisteP1[i-1].getHP()>0) {
-            System.out.println("Pz "+i+", Position: ("+PanzerlisteP1[i-1].getPos().getPosh()+")("+PanzerlisteP1[i-1].getPos().getPosv()+"), HP: "+PanzerlisteP1[i-1].getHP()+", DMG: "+PanzerlisteP1[i-1].getDamage());
+          if (PanzerlisteP1[i-1].getTyp().getHP()>0) {
+            System.out.println("Pz "+i+", Position: ("+PanzerlisteP1[i-1].getPos().getPosh()+")("+PanzerlisteP1[i-1].getPos().getPosv()+"), "+PanzerlisteP1[i-1].getTyp().toString());
           } else {
             System.out.println("Panzer Nummer ("+i+") zerstoert!");
           } // end of if-else
@@ -130,7 +160,7 @@ public class Panzergame {
         auswahl=input.nextInt();
         
         for (int i=0;i<PanzerlisteP1.length;i++) {                              // Test, ob zerstoert
-          if (PanzerlisteP1[auswahl-1].getPlayer()==0) {
+          if (PanzerlisteP1[auswahl-1].getTyp().getHP()<=0) {
             System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
             System.out.print("\nPanzernummer fuer die Auswahl eingeben. ");
             auswahl=input.nextInt();
@@ -139,8 +169,8 @@ public class Panzergame {
         } // end of for
       } else {
         for (int i=1;i-1<PanzerlisteP2.length;i++) {                            // Verfügbare Panzer2 anzeigen
-          if (PanzerlisteP2[i-1].getHP()>0) {
-            System.out.println("Pz "+i+", Position: ("+PanzerlisteP2[i-1].getPos().getPosh()+")("+PanzerlisteP2[i-1].getPos().getPosv()+"), HP: "+PanzerlisteP2[i-1].getHP()+", DMG: "+PanzerlisteP2[i-1].getDamage());
+          if (PanzerlisteP2[i-1].getTyp().getHP()>0) {
+            System.out.println("Pz "+i+", Position: ("+PanzerlisteP2[i-1].getPos().getPosh()+")("+PanzerlisteP2[i-1].getPos().getPosv()+"), "+PanzerlisteP2[i-1].getTyp().toString());
           } else {
             System.out.println("Panzer Nummer ("+i+") zerstoert!");
           } // end of if-else
@@ -150,7 +180,7 @@ public class Panzergame {
         auswahl=input.nextInt();
         
         for (int i=0;i<PanzerlisteP2.length;i++) {                              // Test, ob zerstoert
-          if (PanzerlisteP2[auswahl-1].getPlayer()==0) {
+          if (PanzerlisteP2[auswahl-1].getTyp().getHP()<=0) {
             
             System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
             System.out.print("\nPanzernummer fuer die Auswahl eingeben. ");
@@ -181,9 +211,9 @@ public class Panzergame {
               
               if (ziel.getPosh()<0 || ziel.getPosh()>=b || ziel.getPosv()<0 || ziel.getPosv()>=a ) {
                 PanzerlisteP1[auswahl-1].move(richtung,(k-1));
-                PanzerlisteP1[auswahl-1].subHP(kraft/2);
+                PanzerlisteP1[auswahl-1].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen ein den Kartenrand gefahren und hast "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP1[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!"); 
                 } // end of if
                 break;
@@ -194,9 +224,9 @@ public class Panzergame {
               
               if (hi>0) {                                                       // Hindernis gerammt
                 PanzerlisteP1[auswahl-1].move(richtung,hi-1);
-                PanzerlisteP1[auswahl-1].subHP(kraft/2);
+                PanzerlisteP1[auswahl-1].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen ein Hindernis gefahren und hast "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP1[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!"); 
                 } // end of if
                 break;
@@ -204,14 +234,14 @@ public class Panzergame {
               
               if (pg[0]>0) {                                                        // Gegner gerammt
                 PanzerlisteP1[auswahl-1].move(richtung,pg[0]-1);
-                PanzerlisteP1[auswahl-1].subHP(kraft/3);
-                PanzerlisteP2[pg[1]].subHP(kraft/2);
+                PanzerlisteP1[auswahl-1].getTyp().subHP(kraft/3);
+                PanzerlisteP2[pg[1]].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
                 System.out.println("Der gegnerische Panzer hat "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP1[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!");
                 } // end of if
-                if (PanzerlisteP2[pg[1]].getHP()<=0) {
+                if (PanzerlisteP2[pg[1]].getTyp().getHP()<=0) {
                   System.out.println("Gegnerischer Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -219,14 +249,14 @@ public class Panzergame {
               
               if (pf[0]>0) {                                                       // eigenen gerammt
                 PanzerlisteP1[auswahl-1].move(richtung,pf[0]-1);
-                PanzerlisteP1[auswahl-1].subHP(kraft/3);
-                PanzerlisteP1[pf[1]].subHP(kraft/2);
+                PanzerlisteP1[auswahl-1].getTyp().subHP(kraft/3);
+                PanzerlisteP1[pf[1]].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen einen eigenen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
                 System.out.println("Der andere Panzer hat "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP1[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP1[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!");
                 } // end of if
-                if (PanzerlisteP1[pf[1]].getHP()<=0) {
+                if (PanzerlisteP1[pf[1]].getTyp().getHP()<=0) {
                   System.out.println("Anderer Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -264,20 +294,20 @@ public class Panzergame {
               } // end of if
               
               if (pg[0]>0) {                                                    // Gegner getroffen
-                PanzerlisteP2[pg[1]].subHP(PanzerlisteP1[auswahl-1].getDamage()*k/kraft);
+                PanzerlisteP2[pg[1]].getTyp().subHP(PanzerlisteP1[auswahl-1].getTyp().getDMG()*k/kraft);
                 
-                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP1[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");
-                if (PanzerlisteP2[pg[1]].getHP()==0) {
+                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP1[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
+                if (PanzerlisteP2[pg[1]].getTyp().getHP()<=0) {
                   System.out.println("Der Panzer wurde zerstoert!");
                 } // end of if
                 break;
               } // end of if
               
               if (pf[0]>0) {                                                    // eigenen getroffen
-                PanzerlisteP2[pf[1]].subHP(PanzerlisteP1[auswahl-1].getDamage()*k/kraft);
+                PanzerlisteP2[pf[1]].getTyp().subHP(PanzerlisteP1[auswahl-1].getTyp().getDMG()*k/kraft);
                 
-                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP1[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");
-                if (PanzerlisteP1[pf[1]].getHP()==0) {
+                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP1[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
+                if (PanzerlisteP1[pf[1]].getTyp().getHP()<=0) {
                   System.out.println("Der Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -309,9 +339,9 @@ public class Panzergame {
               
               if (ziel.getPosh()<0 || ziel.getPosh()>=b ||ziel.getPosv()<0 || ziel.getPosv()>=a ) {
                 PanzerlisteP2[auswahl-1].move(richtung,(k-1));
-                PanzerlisteP2[auswahl-1].subHP(kraft/2);
+                PanzerlisteP2[auswahl-1].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen ein den Kartenrand gefahren und hast "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP2[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!"); 
                 } // end of if
                 break;
@@ -319,9 +349,9 @@ public class Panzergame {
               
               if (hi>0) {                                                       // Hindernis gerammt
                 PanzerlisteP2[auswahl-1].move(richtung,hi-1);
-                PanzerlisteP2[auswahl-1].subHP(kraft/2);
+                PanzerlisteP2[auswahl-1].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen ein Hindernis gefahren und hast "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP2[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!"); 
                 } // end of if
                 break;
@@ -329,14 +359,14 @@ public class Panzergame {
               
               if (pg[0]>0) {                                                    // Gegner gerammt
                 PanzerlisteP2[auswahl-1].move(richtung,pg[0]-1);
-                PanzerlisteP2[auswahl-1].subHP(kraft/3);
-                PanzerlisteP1[pg[1]].subHP(kraft/2);
+                PanzerlisteP2[auswahl-1].getTyp().subHP(kraft/3);
+                PanzerlisteP1[pg[1]].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
                 System.out.println("Der gegnerische Panzer hat "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP2[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!");
                 } // end of if
-                if (PanzerlisteP1[pg[1]].getHP()<=0) {
+                if (PanzerlisteP1[pg[1]].getTyp().getHP()<=0) {
                   System.out.println("Gegnerischer Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -344,14 +374,14 @@ public class Panzergame {
               
               if (pf[0]>0) {                                                       // eigenen gerammt
                 PanzerlisteP2[auswahl-1].move(richtung,pf[0]-1);
-                PanzerlisteP2[auswahl-1].subHP(kraft/3);
-                PanzerlisteP2[pf[1]].subHP(kraft/2);
+                PanzerlisteP2[auswahl-1].getTyp().subHP(kraft/3);
+                PanzerlisteP2[pf[1]].getTyp().subHP(kraft/2);
                 System.out.println("Du bist gegen einen eigenen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
                 System.out.println("Der andere Panzer hat "+kraft/2+" Schaden genommen!");
-                if (PanzerlisteP2[auswahl-1].getHP()<=0) {
+                if (PanzerlisteP2[auswahl-1].getTyp().getHP()<=0) {
                   System.out.println("Eigener Panzer wurde zerstoert!");
                 } // end of if
-                if (PanzerlisteP2[pf[1]].getHP()<=0) {
+                if (PanzerlisteP2[pf[1]].getTyp().getHP()<=0) {
                   System.out.println("Anderer Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -389,20 +419,20 @@ public class Panzergame {
               } // end of if
               
               if (pg[0]>0) {                                                    // Gegner getroffen
-                PanzerlisteP1[pg[1]].subHP(PanzerlisteP2[auswahl-1].getDamage()*k/kraft);
+                PanzerlisteP1[pg[1]].getTyp().subHP(PanzerlisteP2[auswahl-1].getTyp().getDMG()*k/kraft);
                 
-                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP2[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");
-                if (PanzerlisteP1[pg[1]].getHP()==0) {
+                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP2[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
+                if (PanzerlisteP1[pg[1]].getTyp().getHP()<=0) {
                   System.out.println("Der Panzer wurde zerstoert!");
                 } // end of if
                 break;
               } // end of if
               
               if (pf[0]>0) {                                                    // eigenen getroffen
-                PanzerlisteP1[pf[1]].subHP(PanzerlisteP2[auswahl-1].getDamage()*k/kraft);
+                PanzerlisteP1[pf[1]].getTyp().subHP(PanzerlisteP2[auswahl-1].getTyp().getDMG()*k/kraft);
                 
-                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP2[auswahl-1].getDamage()*k/kraft+" Schaden gemacht.");
-                if (PanzerlisteP2[pf[1]].getHP()==0) {
+                System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+PanzerlisteP2[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
+                if (PanzerlisteP2[pf[1]].getTyp().getHP()<=0) {
                   System.out.println("Der Panzer wurde zerstoert!");
                 } // end of if
                 break;
@@ -427,7 +457,7 @@ public class Panzergame {
       int destroy=0;
       if (spiel%2==1) {
         for (int i=0;i<PanzerlisteP2.length;i++) {    
-          if (PanzerlisteP2[i].getPlayer()==0) {
+          if (PanzerlisteP2[i].getTyp().getHP()<=0) {
             destroy+=1;
           } // end of if
           if (destroy==PanzerlisteP2.length) {
@@ -438,7 +468,7 @@ public class Panzergame {
         } // end of for
       } else {
         for (int i=0;i<PanzerlisteP1.length;i++) {    
-          if (PanzerlisteP1[i].getPlayer()==0) {
+          if (PanzerlisteP1[i].getTyp().getHP()<=0) {
             destroy+=1;
           } // end of if
           if (destroy==PanzerlisteP2.length) {
@@ -457,6 +487,20 @@ public class Panzergame {
       
     } // end of while
   } // end of main
+  
+  public static int FeldParameter(int min, int max,Scanner input){
+    int erg=0;
+    while (true) { 
+      System.out.print("Bereich von "+min+" - "+max+" : ");
+      erg =input.nextInt(); 
+      if (erg>=min && erg<=max) {
+        break;
+      } // end of if
+      System.out.println("Eingegebener Wert nicht im Bereich.");
+      System.out.println("Neuen Wert bitte eingeben.");
+    } // end of while
+    return erg;
+  } // end of FeldParameter
     
   public static boolean checkListeP(int x, int y, int Anz, Panzer [] PListe){
     boolean erg = true;
