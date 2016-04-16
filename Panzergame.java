@@ -11,7 +11,8 @@ public class Panzergame {
     
     boolean test= true,richtig=true;
     int b=0,a=0,c,PAnz,HAnz,APanz=0,h,v,spiel=0 ,srichtig=0, hi=0;
-    int PPunkte,T1Punkte,T2Punkte,T1,T2;
+    int PPunkte,T1Punkte,T2Punkte,T3Punkte,Restpunkte;
+    int T1P1,T2P1,T3P1,T1P2,T2P2,T3P2;
     
     Hindernis [] Hindernisliste;
     Panzer [] PanzerlisteP1, PanzerlisteP2;
@@ -34,25 +35,51 @@ public class Panzergame {
     System.out.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)");             //Panzeranzahl abfragen
     PAnz=FeldParameter(1,c/20,input);
     
-    PPunkte=c/PAnz*80;
-    T1Punkte=PPunkte/PAnz*1;
-    T2Punkte=PPunkte/PAnz*2;
-    
-    System.out.println("\nPanzertypen auswählen ("+PPunkte+" Punkte zu vergeben):");
-    System.out.println("Typ 1("+T1Punkte+" Punkte): Normale Panzer, 10 HP, 5 DMG");
-    System.out.println("Typ 2("+T2Punkte+" Punkte): Schwerer Panzer, 20 HP, 10 DMG\n");
-    
-    System.out.println("Anzahl Typ 1 Panzer:");
-    T1=FeldParameter(0,PPunkte/T1Punkte,input);
-    System.out.println(PPunkte-T1*T1Punkte+" Punkte noch vorhanden");
-    System.out.println("Anzahl Typ 2 Panzer:");
-    T2=FeldParameter((PPunkte-T1*T1Punkte)/T2Punkte,(PPunkte-T1*T1Punkte)/T2Punkte,input);
-    
     System.out.println("\nWie wie viele Hindernisse möchten sie haben? ");          //Hindernisse abfragen
     HAnz=FeldParameter(0,c/10,input);
     
-    PanzerlisteP1 = new Panzer[T1+T2];                                           //1. Inizialisieren
-    PanzerlisteP2 = new Panzer[T1+T2];
+    PPunkte=c/PAnz*80;
+    T1Punkte=PPunkte/PAnz*2;
+    T2Punkte=PPunkte/PAnz*4;
+    T3Punkte=PPunkte/PAnz*3;
+    
+    System.out.println("\nSpieler 1 Panzerauswahl:");                           // Panzerauswahl Spieler 1
+    System.out.println("Panzertypen auswählen ("+PPunkte+" Punkte zu vergeben):");
+    System.out.println("Typ 1("+T1Punkte+" Punkte): Normale Panzer, 10 HP, 5 DMG");
+    System.out.println("Typ 2("+T2Punkte+" Punkte): Schwerer Panzer, 20 HP, 10 DMG\n");
+    System.out.println("Typ 3("+T3Punkte+" Punkte): Panzerjaeger, 15 HP, 5 DMG\n");
+    
+    System.out.println("Anzahl Typ 1 Panzer:");
+    T1P1=FeldParameter(0,PPunkte/T1Punkte,input);
+    Restpunkte=PPunkte-T1P1*T1Punkte;
+    System.out.println(Restpunkte+" Punkte noch vorhanden");
+    System.out.println("Anzahl Typ 2 Panzer:");
+    T2P1=FeldParameter(0,(Restpunkte)/T2Punkte,input);
+    Restpunkte -=T2P1*T2Punkte;
+    System.out.println(Restpunkte+" Punkte noch vorhanden");
+    System.out.println("Anzahl Typ 2 Panzer:");
+    T3P1=FeldParameter((Restpunkte)/T3Punkte,(Restpunkte)/T3Punkte,input);
+    
+    Restpunkte=PPunkte;
+    System.out.println("\nSpieler 2 Panzerauswahl:");                           // Panzerauswahl Spieler 2
+    System.out.println("Panzertypen auswählen ("+PPunkte+" Punkte zu vergeben):");
+    System.out.println("Typ 1("+T1Punkte+" Punkte): Normale Panzer, 10 HP, 5 DMG");
+    System.out.println("Typ 2("+T2Punkte+" Punkte): Schwerer Panzer, 20 HP, 10 DMG\n");
+    System.out.println("Typ 3("+T3Punkte+" Punkte): Panzerjaeger, 15 HP, 5 DMG\n");
+    
+    System.out.println("Anzahl Typ 1 Panzer:");
+    T1P2=FeldParameter(0,PPunkte/T1Punkte,input);
+    Restpunkte -= T1P2*T1Punkte;
+    System.out.println(Restpunkte+" Punkte noch vorhanden");
+    System.out.println("Anzahl Typ 2 Panzer:");
+    T2P2=FeldParameter(0,(Restpunkte)/T2Punkte,input);
+    Restpunkte -=T2P2*T2Punkte;
+    System.out.println(Restpunkte+" Punkte noch vorhanden");
+    System.out.println("Anzahl Typ 2 Panzer:");
+    T3P2=FeldParameter((Restpunkte)/T3Punkte,(Restpunkte)/T3Punkte,input);
+    
+    PanzerlisteP1 = new Panzer[T1P1+T2P1+T3P1];                                           //1. Inizialisieren
+    PanzerlisteP2 = new Panzer[T1P2+T2P2+T3P2];
     Hindernisliste = new Hindernis[HAnz];
     
     Spielfeld Feld1 = new Spielfeld(b, a, PanzerlisteP1, PanzerlisteP2, Hindernisliste);               
@@ -64,10 +91,14 @@ public class Panzergame {
       richtig=checkListeP(h,v,i,PanzerlisteP1);
       if (richtig) {
         
-        if (i+1<=T1) {
+        if (i+1<=T1P1) {
           PanzerlisteP1[i]= new Panzer(h,v,1,0);
         } else {
-          PanzerlisteP1[i]= new Panzer(h,v,1,1);
+          if (i+1+T1P1<=T2P1) {
+            PanzerlisteP1[i]= new Panzer(h,v,1,1);
+          } else {
+            PanzerlisteP1[i]= new Panzer(h,v,1,2);
+          }// end of if-else
         } // end of if-else
         
       } else {
@@ -87,10 +118,14 @@ public class Panzergame {
       if (richtig) {
         richtig=checkListeP(h,v,i,PanzerlisteP2);
         if (richtig) {
-          if (i+1<=T1) {
+          if (i+1<=T1P2) {
             PanzerlisteP2[i]= new Panzer(h,v,2,0);
           } else {
-            PanzerlisteP2[i]= new Panzer(h,v,2,1);
+            if (i+1+T1P2<=T2P2) {
+              PanzerlisteP2[i]= new Panzer(h,v,2,1);
+            } else {
+              PanzerlisteP2[i]= new Panzer(h,v,2,2);
+            }// end of if-else
           } // end of if-else
           
         } else {
@@ -455,7 +490,7 @@ public class Panzergame {
         Feld1.print();
       } // end of if 
       int destroy=0;
-      if (spiel%2==1) {
+      
         for (int i=0;i<PanzerlisteP2.length;i++) {    
           if (PanzerlisteP2[i].getTyp().getHP()<=0) {
             destroy+=1;
@@ -466,9 +501,9 @@ public class Panzergame {
             break;
           } // end of if
         } // end of for
-      } else {
-        for (int i=0;i<PanzerlisteP1.length;i++) {    
-          if (PanzerlisteP1[i].getTyp().getHP()<=0) {
+      
+      for (int i=0;i<PanzerlisteP1.length;i++) {    
+        if (PanzerlisteP1[i].getTyp().getHP()<=0) {
             destroy+=1;
           } // end of if
           if (destroy==PanzerlisteP2.length) {
@@ -477,7 +512,7 @@ public class Panzergame {
             break;
           } // end of if
         }
-      } // end of if-else
+      
       
       destroy=0;
       

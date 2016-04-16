@@ -78,7 +78,18 @@ class Spielfeld {
             if (PListe1[t].getTyp().getHP()<=0) {
               bild = bild+"h";
             } else {
-              bild = bild+"A";
+              switch (PListe1[t].getTyp().getTypNr()) {
+                case  0: 
+                  bild = bild+"A";
+                  break;
+                case  1: 
+                  bild = bild+"B";
+                  break;
+                case  2: 
+                  bild = bild+"C";
+                  break;  
+                  
+              } // end of switch
             } // end of if-else
             belegt=true;
             break;
@@ -91,7 +102,17 @@ class Spielfeld {
               if (PListe2[t].getTyp().getHP()<=0) {
                 bild = bild+"h";
               } else {
-                bild = bild+"B";
+                switch (PListe2[t].getTyp().getTypNr()) {
+                  case  0: 
+                    bild = bild+"N";
+                    break;
+                  case  1: 
+                    bild = bild+"O";
+                    break;
+                  case  2: 
+                    bild = bild+"P";
+                    break;  
+                } // end of switch
               } // end of if-else
               belegt=true;
               break;

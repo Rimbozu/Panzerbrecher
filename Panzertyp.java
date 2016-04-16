@@ -13,7 +13,16 @@ class Panzertyp {
         hp=20;
         dmg=10;
         break;
+      case  2:
+        hp=5;
+        dmg=15;
+        break;  
+        
     } // end of switch  
+  }
+  
+  public int getTypNr(){
+    return typNr;
   }
   
   public int getHP(){
@@ -33,7 +42,9 @@ class Panzertyp {
       case  0: 
         return "Normale Panzer, HP:  "+hp+", DMG: "+dmg;
       case  1:
-      return "Schwerer Panzer, HP:  "+hp+", DMG: "+dmg;
+        return "Schwerer Panzer, HP:  "+hp+", DMG: "+dmg;
+      case  2:
+        return "Panzerjaeger, HP:  "+hp+", DMG: "+dmg;        
       default: 
         return "Typ nicht vorhanden";  
         
