@@ -2,12 +2,12 @@ class Panzer {
   
   private Position pos;
   private Panzertyp typ;
-  private int besitzer;
+  private int player;
   
     
   public Panzer(int h, int v,int player, int typ){
     pos = new Position(h,v);
-    besitzer=player;
+    this.player=player;
     this.typ = new Panzertyp(typ);
   }
     
@@ -16,7 +16,7 @@ class Panzer {
   } 
   
   public int getPlayer(){
-    return besitzer;
+    return player;
   }
   
   public Panzertyp getTyp(){
