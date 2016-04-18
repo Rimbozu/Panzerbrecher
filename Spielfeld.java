@@ -61,20 +61,20 @@ class Spielfeld {
         Panzerliste1[auswahl-1].getTyp().subHP(kraft/2);
         System.out.println("Du bist gegen ein den Kartenrand gefahren und hast "+kraft/2+" Schaden genommen!");
         if (Panzerliste1[auswahl-1].getTyp().getHP()<=0) {
-          System.out.println("Eigener Panzer wurde zerstoert!"); 
+          System.out.println("Eigener Panzer wurde zerstört!"); 
         } // end of if
         break;
       } // end of if
       
-      pg=Panzergame.TestPanzer(ziel,Panzerliste2,k);                              // Gegnerischer Panzer Test
-      pf=Panzergame.TestPanzer(ziel,Panzerliste1,k);                              // eigener Panzer Test
+      pg=HelpFunktion.TestPanzer(ziel,Panzerliste2,k);                              // Gegnerischer Panzer Test
+      pf=HelpFunktion.TestPanzer(ziel,Panzerliste1,k);                              // eigener Panzer Test
       
       if (hi>0) {                                                       // Hindernis gerammt
         Panzerliste1[auswahl-1].move(richtung,hi-1);
         Panzerliste1[auswahl-1].getTyp().subHP(kraft/2);
         System.out.println("Du bist gegen ein Hindernis gefahren und hast "+kraft/2+" Schaden genommen!");
         if (Panzerliste1[auswahl-1].getTyp().getHP()<=0) {
-          System.out.println("Eigener Panzer wurde zerstoert!"); 
+          System.out.println("Eigener Panzer wurde zerstört!"); 
         } // end of if
         break;
       } // end of if
@@ -86,10 +86,10 @@ class Spielfeld {
         System.out.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
         System.out.println("Der gegnerische Panzer hat "+kraft/2+" Schaden genommen!");
         if (Panzerliste1[auswahl-1].getTyp().getHP()<=0) {
-          System.out.println("Eigener Panzer wurde zerstoert!");
+          System.out.println("Eigener Panzer wurde zerstört!");
         } // end of if
         if (Panzerliste2[pg[1]].getTyp().getHP()<=0) {
-          System.out.println("Gegnerischer Panzer wurde zerstoert!");
+          System.out.println("Gegnerischer Panzer wurde zerstört!");
         } // end of if
         break;
       } // end of if
@@ -101,10 +101,10 @@ class Spielfeld {
         System.out.println("Du bist gegen einen eigenen Panzer gefahren und hast "+kraft/3+" Schaden genommen!");
         System.out.println("Der andere Panzer hat "+kraft/2+" Schaden genommen!");
         if (Panzerliste1[auswahl-1].getTyp().getHP()<=0) {
-          System.out.println("Eigener Panzer wurde zerstoert!");
+          System.out.println("Eigener Panzer wurde zerstört!");
         } // end of if
         if (Panzerliste1[pf[1]].getTyp().getHP()<=0) {
-          System.out.println("Anderer Panzer wurde zerstoert!");
+          System.out.println("Anderer Panzer wurde zerstört!");
         } // end of if
         break;
       } // end of if
@@ -132,8 +132,8 @@ class Spielfeld {
         } // end of if
       } // end of for
       
-      pg=Panzergame.TestPanzer(ziel,Panzerliste2,k);                              // Gegnerischer Panzer Test
-      pf=Panzergame.TestPanzer(ziel,Panzerliste1,k);                              // eigener Panzer Test
+      pg=HelpFunktion.TestPanzer(ziel,Panzerliste2,k);                              // Gegnerischer Panzer Test
+      pf=HelpFunktion.TestPanzer(ziel,Panzerliste1,k);                              // eigener Panzer Test
       
       if (ziel.getPosh()<0 || ziel.getPosh()>=getSeiteH() ||ziel.getPosv()<0 || ziel.getPosv()>=getSeiteV() ) {
         System.out.println("Du hast gegen den Kartenrand geschossen!");
@@ -150,7 +150,7 @@ class Spielfeld {
         
         System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+Panzerliste1[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
         if (Panzerliste2[pg[1]].getTyp().getHP()<=0) {
-          System.out.println("Der Panzer wurde zerstoert!");
+          System.out.println("Der Panzer wurde zerstört!");
         } // end of if
         break;
       } // end of if
@@ -160,7 +160,7 @@ class Spielfeld {
         
         System.out.println("\nDu hast einen gegnerischen Panzer getroffen und "+Panzerliste1[auswahl-1].getTyp().getDMG()*k/kraft+" Schaden gemacht.");
         if (Panzerliste1[pf[1]].getTyp().getHP()<=0) {
-          System.out.println("Der Panzer wurde zerstoert!");
+          System.out.println("Der Panzer wurde zerstört!");
         } // end of if
         break;
       } // end of if

@@ -21,18 +21,18 @@ public class Panzergame {
     System.out.print("2 Spieler Spielmodus"); 
     
     System.out.println("\nWie Breit soll das Spielfeld sein? ");                //Spielfeldgröße abfragen 
-    b=FeldParameter(5,15,input);                                                                      
+    b=HelpFunktion.EingabeInt(5,15,input);                                                                      
     
     System.out.println("Wie Lang soll das Spielfeld sein? ");
-    a=FeldParameter(5,40,input);
+    a=HelpFunktion.EingabeInt(5,40,input);
     
     c=a*b;
     
     System.out.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)");             //Panzeranzahl abfragen
-    PAnz=FeldParameter(1,c/20,input);
+    PAnz=HelpFunktion.EingabeInt(1,c/20,input);
     
     System.out.println("\nWie wie viele Hindernisse möchten sie haben? ");          //Hindernisse abfragen
-    HAnz=FeldParameter(0,c/10,input);
+    HAnz=HelpFunktion.EingabeInt(0,c/10,input);
     
     TypenWert[0]=c;
     TypenWert[1]=c/(PAnz*2);
@@ -40,33 +40,33 @@ public class Panzergame {
     TypenWert[3]=TypenWert[1]/10*15;
     
     System.out.println("\nSpieler 1 Panzerauswahl:");                           // Panzerauswahl Spieler 1
-    showPanzertypen(TypenWert);
+    HelpFunktion.showPanzertypen(TypenWert);
     
     System.out.println("Anzahl Typ 1 Panzer:");
-    T1P1=FeldParameter(0,TypenWert[0]/TypenWert[1],input);
+    T1P1=HelpFunktion.EingabeInt(0,TypenWert[0]/TypenWert[1],input);
     Restpunkte=TypenWert[0]-T1P1*TypenWert[1];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
     System.out.println("Anzahl Typ 2 Panzer:");
-    T2P1=FeldParameter(0,(Restpunkte)/TypenWert[2],input);
+    T2P1=HelpFunktion.EingabeInt(0,(Restpunkte)/TypenWert[2],input);
     Restpunkte -=T2P1*TypenWert[2];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
     System.out.println("Anzahl Typ 2 Panzer:");
-    T3P1=FeldParameter((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
+    T3P1=HelpFunktion.EingabeInt((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
     
     Restpunkte=TypenWert[0];
     System.out.println("\nSpieler 2 Panzerauswahl:");                           // Panzerauswahl Spieler 2
-    showPanzertypen(TypenWert);
+    HelpFunktion.showPanzertypen(TypenWert);
     
     System.out.println("Anzahl Typ 1 Panzer:");
-    T1P2=FeldParameter(0,TypenWert[0]/TypenWert[1],input);
+    T1P2=HelpFunktion.EingabeInt(0,TypenWert[0]/TypenWert[1],input);
     Restpunkte -= T1P2*TypenWert[1];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
     System.out.println("Anzahl Typ 2 Panzer:");
-    T2P2=FeldParameter(0,(Restpunkte)/TypenWert[2],input);
+    T2P2=HelpFunktion.EingabeInt(0,(Restpunkte)/TypenWert[2],input);
     Restpunkte -=T2P2*TypenWert[2];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
     System.out.println("Anzahl Typ 2 Panzer:");
-    T3P2=FeldParameter((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
+    T3P2=HelpFunktion.EingabeInt((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
     
     PanzerlisteP1 = new Panzer[T1P1+T2P1+T3P1];                                           //1. Inizialisieren
     PanzerlisteP2 = new Panzer[T1P2+T2P2+T3P2];
@@ -78,7 +78,7 @@ public class Panzergame {
       h=(int) (Math.random()*b);
       v=(int) (Math.random()*a);
       
-      richtig=checkListeP(h,v,i,PanzerlisteP1);
+      richtig=HelpFunktion.checkListeP(h,v,i,PanzerlisteP1);
       if (richtig) {
         
         if (i+1<=T1P1) {
@@ -104,9 +104,9 @@ public class Panzergame {
       h=(int) (Math.random()*b);
       v=(int) (Math.random()*a);
       
-      richtig=checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
+      richtig=HelpFunktion.checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
-        richtig=checkListeP(h,v,i,PanzerlisteP2);
+        richtig=HelpFunktion.checkListeP(h,v,i,PanzerlisteP2);
         if (richtig) {
           if (i+1<=T1P2) {
             PanzerlisteP2[i]= new Panzer(h,v,2,0);
@@ -134,11 +134,11 @@ public class Panzergame {
       h=(int) (Math.random()*b);
       v=(int) (Math.random()*a);
       
-      richtig=checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
+      richtig=HelpFunktion.checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
-        richtig=checkListeP(h,v,PanzerlisteP2.length,PanzerlisteP2);
+        richtig=HelpFunktion.checkListeP(h,v,PanzerlisteP2.length,PanzerlisteP2);
         if (richtig) {
-          richtig=checkListeH(h,v,i,Hindernisliste);
+          richtig=HelpFunktion.checkListeH(h,v,i,Hindernisliste);
           if (richtig) {
             Hindernisliste[i]= new Hindernis(h,v);
           } else {
@@ -161,29 +161,22 @@ public class Panzergame {
       spiel+=1; 
       int spieler,auswahl=0;
       
-      
-      if (spiel%2==1) {
-        spieler = 1;
-      } else {
-        spieler = 2;
-      } // end of if-else
+      if (spiel%2==1) {spieler = 1;} 
+      else {spieler = 2;} // end of if-else
       
       System.out.println("\nSpieler "+spieler+" ist an der Reihe.");
       System.out.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");
       System.out.println("Ihre Panzer:\n");
       
-      if (spiel%2==1) {
-        auswahl=showPanzerliste(PanzerlisteP1,input);
-      } else {
-        auswahl=showPanzerliste(PanzerlisteP2,input);
-      } // end of if-else
+      if (spiel%2==1) {auswahl=HelpFunktion.showPanzerliste(PanzerlisteP1,input);} 
+      else {auswahl=HelpFunktion.showPanzerliste(PanzerlisteP2,input);} // end of if-else
       
       System.out.print("Panzer bewegen(0) oder schießen(1)?  ");                  // Aktionsparameter eingeben
-      int  action=input.nextInt();
+      int  action=HelpFunktion.EingabeInt(0,1,input);
       System.out.print("Richtung?(Numpad Richtig Bsp 9: oben rechts)  ");
-      int  richtung=input.nextInt();
+      int  richtung=HelpFunktion.EingabeInt(1,9,input);
       System.out.print("Kraft? ");
-      int  kraft=input.nextInt();
+      int  kraft=HelpFunktion.EingabeInt(1,100,input);
       
       if (spiel%2==1) {                                                         // Spieler 1 Anweisungen
         switch (action) {
@@ -208,115 +201,14 @@ public class Panzergame {
       } // end of if-else
       
       System.out.print("Aktuelles Spielfeld anzeigen? (ja=1): ");
-      int  feld=input.nextInt();
+      int  feld=HelpFunktion.EingabeInt(0,1,input);
       
-      if (feld==1) {
-        Feld1.print();
-      } // end of if 
+      if (feld==1) {Feld1.print();} // end of if 
       
-      exit=TestSpielende(PanzerlisteP1);
-      exit=TestSpielende(PanzerlisteP2);
+      exit=HelpFunktion.TestSpielende(PanzerlisteP1);
+      exit=HelpFunktion.TestSpielende(PanzerlisteP2);
       
-      if (exit) {
-        break;
-      } // end of if
-      
+      if (exit) {break;} // end of if
     } // end of while
-  } // end of main
-  
-  public static int FeldParameter(int min, int max,Scanner input){
-    int erg=0;
-    while (true) { 
-      System.out.print("Bereich von "+min+" - "+max+" : ");
-      erg =input.nextInt(); 
-      if (erg>=min && erg<=max) {
-        break;
-      } // end of if
-      System.out.println("Eingegebener Wert nicht im Bereich.");
-      System.out.println("Neuen Wert bitte eingeben.");
-    } // end of while
-    return erg;
-  } // end of FeldParameter
-    
-  public static boolean checkListeP(int x, int y, int Anz, Panzer [] PListe){
-    boolean erg = true;
-    for (int i=0;i<Anz;i++) {
-      if (x == PListe[i].getPos().getPosh() && y == PListe[i].getPos().getPosv()) {
-        erg = false;
-      } // end of if
-    } // end of for
-    return erg;
-  } // end of CheckListeP
-    
-  public static boolean checkListeH(int x, int y, int Anz, Hindernis [] HListe){
-    boolean erg = true;
-    for (int i=0;i<Anz;i++) {
-      if (x == HListe[i].getPos().getPosh() && y == HListe[i].getPos().getPosv()) {
-        erg = false;
-      } // end of if
-    } // end of for
-    return erg;
-  } // end of CheckListeH
-  
-  public static void showPanzertypen(int [] Wert){
-    System.out.println("Panzertypen auswählen ("+Wert[0]+" Punkte zu vergeben):");
-    System.out.println("Typ 1("+Wert[1]+" Punkte): Normale Panzer, 10 HP, 5 DMG");
-    System.out.println("Typ 2("+Wert[2]+" Punkte): Schwerer Panzer, 20 HP, 10 DMG");
-    System.out.println("Typ 3("+Wert[3]+" Punkte): Panzerjaeger, 15 HP, 5 DMG\n");
-  }
-    
-  public static int showPanzerliste(Panzer [] Liste,Scanner input){
-    int auswahl=0;
-    for (int i=1;i-1<Liste.length;i++) {                                        // Verfügbare Panzer1 anzeigen
-      if (Liste[i-1].getTyp().getHP()>0) {
-        System.out.println("Pz "+i+", Position: ("+Liste[i-1].getPos().getPosh()+")("+Liste[i-1].getPos().getPosv()+"), "+Liste[i-1].getTyp().toString());
-      } else {
-        System.out.println("Panzer Nummer ("+i+") zerstoert!");
-      } // end of if-else
-    } // end of for
-    
-    System.out.println("\nPanzernummer fuer die Auswahl eingeben.");              // Panzer auswaehlen
-    auswahl=FeldParameter(1,Liste.length,input);
-    
-    
-    for (int i=0;i<Liste.length;i++) {                                          // Test, ob zerstoert
-      if (Liste[auswahl-1].getTyp().getHP()<=0) {               
-        System.out.println("Dieser Panzer ist zerstoert, bitte waehle einen anderen Panzer.");
-        System.out.print("\nPanzernummer fuer die Auswahl eingeben. ");
-        auswahl=input.nextInt();
-        i=0;
-      } // end of if
-    } // end of for
-    return auswahl;
-  }
-   
-  public static int [] TestPanzer(Position ziel, Panzer [] Liste, int k){       //Test auf Panzer
-    int [] erg = new int [2];
-    for (int i=0;i<Liste.length;i++) {                       
-      if (ziel.getPosh() == Liste[i].getPos().getPosh() && ziel.getPosv() == Liste[i].getPos().getPosv()) {
-        erg[0]=k;
-        erg[1]=i;
-        break;
-      } // end of if
-    } // end of for 
-    return erg;
-  } // end of TestPanzer   
-  
-  public static boolean TestSpielende(Panzer [] Liste){                         //Test auf Spielende
-    int destroy=0;
-    for (int i=0;i<Liste.length;i++) {    
-      if (Liste[i].getTyp().getHP()<=0) {
-        destroy+=1;
-      } // end of if
-      if (destroy==Liste.length) {
-        
-        System.out.println("Der Gegner wurde besiegt. Spieler Nr."+Liste[0].getPlayer()+" hat gewonnen");
-        return true;
-      } // end of if
-    } // end of for
-    return false;
-  }
-  
-  
-    
+  } // end of main  
 } // end of class Panzergame
