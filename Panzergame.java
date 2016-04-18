@@ -24,7 +24,7 @@ public class Panzergame {
     b=HelpFunktion.EingabeInt(5,15,input);                                                                      
     
     System.out.println("Wie Lang soll das Spielfeld sein? ");
-    a=HelpFunktion.EingabeInt(5,40,input);
+    a=HelpFunktion.EingabeInt(b,40,input);
     
     c=a*b;
     
@@ -76,7 +76,7 @@ public class Panzergame {
     
     for (int i=0;i<PanzerlisteP1.length;i++) {                                                  // Panzer Spieler 1 erzeugen
       h=(int) (Math.random()*b);
-      v=(int) (Math.random()*a);
+      v=(int) (Math.random()*(a*30/100));
       
       richtig=HelpFunktion.checkListeP(h,v,i,PanzerlisteP1);
       if (richtig) {
@@ -102,7 +102,7 @@ public class Panzergame {
     
     for (int i=0;i<PanzerlisteP2.length;i++) {                                  // Panzer Spieler 2 erzeugen
       h=(int) (Math.random()*b);
-      v=(int) (Math.random()*a);
+      v=(int) ((Math.random()*(a*30/100))+(a*70/100));
       
       richtig=HelpFunktion.checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
@@ -132,7 +132,7 @@ public class Panzergame {
     
     for (int i=0;i<HAnz;i++) {                                                  // Hindernisse erzeugen
       h=(int) (Math.random()*b);
-      v=(int) (Math.random()*a);
+      v=(int) (Math.random()*(a*70/100)+(a*15/100));
       
       richtig=HelpFunktion.checkListeP(h,v,PanzerlisteP1.length,PanzerlisteP1);
       if (richtig) {
@@ -140,7 +140,8 @@ public class Panzergame {
         if (richtig) {
           richtig=HelpFunktion.checkListeH(h,v,i,Hindernisliste);
           if (richtig) {
-            Hindernisliste[i]= new Hindernis(h,v);
+            
+            Hindernisliste[i]= new Hindernis(h,v,(int) (Math.random()*2));
           } else {
             i -=1;
           } // end of if-else
@@ -171,11 +172,11 @@ public class Panzergame {
       if (spiel%2==1) {auswahl=HelpFunktion.showPanzerliste(PanzerlisteP1,input);} 
       else {auswahl=HelpFunktion.showPanzerliste(PanzerlisteP2,input);} // end of if-else
       
-      System.out.print("Panzer bewegen(0) oder schießen(1)?  ");                  // Aktionsparameter eingeben
+      System.out.println("Panzer bewegen(0) oder schießen(1)?");                  // Aktionsparameter eingeben
       int  action=HelpFunktion.EingabeInt(0,1,input);
-      System.out.print("Richtung?(Numpad Richtig Bsp 9: oben rechts)  ");
+      System.out.println("Richtung?(Numpad Richtig)");
       int  richtung=HelpFunktion.EingabeInt(1,9,input);
-      System.out.print("Kraft? ");
+      System.out.println("Kraft? ");
       int  kraft=HelpFunktion.EingabeInt(1,100,input);
       
       if (spiel%2==1) {                                                         // Spieler 1 Anweisungen

@@ -1,20 +1,20 @@
 class Panzertyp {
   
-  private int typNr, hp, dmg;
+  private int typNr, hp, dmg, maxhp;
   
   public Panzertyp (int typ){
     typNr=typ;
     switch (typ) {
       case  0: 
-        hp=10;
+        hp=maxhp=10;
         dmg=5;
         break;  
       case  1:
-        hp=20;
+        hp=maxhp=20;
         dmg=10;
         break;
       case  2:
-        hp=5;
+        hp=maxhp=5;
         dmg=15;
         break;  
         
@@ -27,6 +27,10 @@ class Panzertyp {
   
   public int getHP(){
     return hp;
+  }
+  
+  public int getmaxHP(){
+    return maxhp;
   }
   
   public int getDMG(){

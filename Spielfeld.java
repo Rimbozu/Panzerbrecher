@@ -125,10 +125,12 @@ class Spielfeld {
     for (int k=1;k<=kraft;k++) {
       ziel = new Position(Panzerliste1[auswahl-1].target(richtung,k).getPosh(),Panzerliste1[auswahl-1].target(richtung,k).getPosv());
       
-      for (int i=0;i<HListe.length;i++) {                       // Hinderniss Test
-        if (ziel.getPosh() == HListe[i].getPos().getPosh() && ziel.getPosv() == HListe[i].getPos().getPosv()) {
-          hi=k;
-          break;
+      for (int i=0;i<HListe.length;i++) {                                       // Hinderniss Test
+        if (HListe[i].getArt()==0) {
+          if (ziel.getPosh() == HListe[i].getPos().getPosh() && ziel.getPosv() == HListe[i].getPos().getPosv()) {
+            hi=k;
+            break;
+          } // end of if
         } // end of if
       } // end of for
       
@@ -211,13 +213,25 @@ class Spielfeld {
             } else {
               switch (PListe1[t].getTyp().getTypNr()) {
                 case  0: 
-                  bild = bild+"A";
+                  if (PListe1[t].getTyp().getHP()==PListe1[t].getTyp().getmaxHP()) {
+                    bild = bild+"A";
+                    break;
+                  } // end of if
+                  bild = bild+"a";
                   break;
                 case  1: 
-                  bild = bild+"B";
+                  if (PListe1[t].getTyp().getHP()==PListe1[t].getTyp().getmaxHP()) {
+                    bild = bild+"B";
+                    break;
+                  } // end of if
+                  bild = bild+"b";
                   break;
                 case  2: 
-                  bild = bild+"C";
+                  if (PListe1[t].getTyp().getHP()==PListe1[t].getTyp().getmaxHP()) {
+                    bild = bild+"C";
+                    break;
+                  } // end of if
+                  bild = bild+"c";
                   break;  
                   
               } // end of switch
@@ -234,14 +248,26 @@ class Spielfeld {
                 bild = bild+"h";
               } else {
                 switch (PListe2[t].getTyp().getTypNr()) {
-                  case  0: 
-                    bild = bild+"N";
+                  case  0:
+                    if (PListe2[t].getTyp().getHP()==PListe2[t].getTyp().getmaxHP()) {
+                      bild = bild+"N";
+                      break;
+                    } // end of if
+                    bild = bild+"n";
                     break;
                   case  1: 
-                    bild = bild+"O";
+                    if (PListe2[t].getTyp().getHP()==PListe2[t].getTyp().getmaxHP()) {
+                      bild = bild+"O";
+                      break;
+                    } // end of if
+                    bild = bild+"o";
                     break;
                   case  2: 
-                    bild = bild+"P";
+                    if (PListe2[t].getTyp().getHP()==PListe2[t].getTyp().getmaxHP()) {
+                      bild = bild+"P";
+                      break;
+                    } // end of if
+                    bild = bild+"p";
                     break;  
                 } // end of switch
               } // end of if-else
@@ -254,7 +280,17 @@ class Spielfeld {
         if (belegt == false) {
           for (int t=0;t<getHListe();t++) {
             if (hier.getPosh()==HListe[t].getPos().getPosh() && hier.getPosv()==HListe[t].getPos().getPosv()) {
-              bild = bild+"H";
+              
+              switch (HListe[t].getArt()) {
+                case  0: 
+                  bild = bild+"H";
+                  break;
+                case  1: 
+                  bild = bild+"F";
+                  break;
+              } // end of switch  
+              
+              
               belegt=true;
               break;
             }
