@@ -1,7 +1,6 @@
 class Spielfeld {
   
   private int [][] feld;
-  private int [][] PListe;
   private Panzer [] PListe1;
   private Panzer [] PListe2;
   private Hindernis [] HListe;
@@ -176,7 +175,6 @@ class Spielfeld {
 
   public void print(){
     String bild = new String();
-    boolean test = false;
     boolean belegt =false;
     
     bild="  ";
@@ -198,8 +196,6 @@ class Spielfeld {
     
     System.out.println(" +"+bild+"+");
     bild="";
-    
-    int pl=0;
     
     for (int i=0;i<getSeiteH();i++) {
       for (int j=0;j<getSeiteV();j++) {
@@ -333,7 +329,6 @@ class Spielfeld {
   }
     
   public void printLegende(){
-    String legende = new String();
     System.out.println("\t\t\tSpieler 1 \tSpieler 2");
     System.out.println("Normaler Panzer: \t A \t\t N");
     System.out.println("Schwerer Panzer: \t B \t\t O");

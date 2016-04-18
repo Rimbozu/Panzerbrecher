@@ -9,8 +9,8 @@ public class Panzergame {
     
     System.out.println("Willkommen zum Panzerspiel.\n");
     
-    boolean test= true,richtig=true;
-    int b=0,a=0,c,PAnz,HAnz,APanz=0,h,v,spiel=0 ,srichtig=0;
+    boolean richtig=true;
+    int b=0,a=0,c,PAnz,HAnz,h,v,spiel=0;
     int [] TypenWert = new int [4];
     int Restpunkte=0;
     int T1P1,T2P1,T3P1,T1P2,T2P2,T3P2;
@@ -50,7 +50,7 @@ public class Panzergame {
     T2P1=HelpFunktion.EingabeInt(0,(Restpunkte)/TypenWert[2],input);
     Restpunkte -=T2P1*TypenWert[2];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
-    System.out.println("Anzahl Typ 2 Panzer:");
+    System.out.println("Anzahl Typ 3 Panzer:");
     T3P1=HelpFunktion.EingabeInt((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
     
     Restpunkte=TypenWert[0];
@@ -65,7 +65,7 @@ public class Panzergame {
     T2P2=HelpFunktion.EingabeInt(0,(Restpunkte)/TypenWert[2],input);
     Restpunkte -=T2P2*TypenWert[2];
     System.out.println("\n"+Restpunkte+" Punkte noch vorhanden");
-    System.out.println("Anzahl Typ 2 Panzer:");
+    System.out.println("Anzahl Typ 3 Panzer:");
     T3P2=HelpFunktion.EingabeInt((Restpunkte)/TypenWert[3],(Restpunkte)/TypenWert[3],input);
     
     PanzerlisteP1 = new Panzer[T1P1+T2P1+T3P1];                                           //1. Inizialisieren
@@ -84,7 +84,7 @@ public class Panzergame {
         if (i+1<=T1P1) {
           PanzerlisteP1[i]= new Panzer(h,v,1,0);
         } else {
-          if (i+1+T1P1<=T2P1) {
+          if (i+1-T1P1<=T2P1) {
             PanzerlisteP1[i]= new Panzer(h,v,1,1);
           } else {
             PanzerlisteP1[i]= new Panzer(h,v,1,2);
@@ -111,7 +111,7 @@ public class Panzergame {
           if (i+1<=T1P2) {
             PanzerlisteP2[i]= new Panzer(h,v,2,0);
           } else {
-            if (i+1+T1P2<=T2P2) {
+            if (i+1-T1P2<=T2P2) {
               PanzerlisteP2[i]= new Panzer(h,v,2,1);
             } else {
               PanzerlisteP2[i]= new Panzer(h,v,2,2);
@@ -177,9 +177,10 @@ public class Panzergame {
       System.out.println("Richtung?(Numpad Richtig)");
       int  richtung=HelpFunktion.EingabeInt(1,9,input);
       System.out.println("Kraft? ");
-      int  kraft=HelpFunktion.EingabeInt(1,100,input);
       
-      if (spiel%2==1) {                                                         // Spieler 1 Anweisungen
+      
+      if (spiel%2==1) { 														// Spieler 1 Anweisungen
+    	  int  kraft=HelpFunktion.EingabeInt(1,PanzerlisteP1[auswahl-1].getTyp().getRange(),input);
         switch (action) {
           case  0:                                                              // Panzer bewegen
             Feld1.Panzerbewegen(PanzerlisteP1,PanzerlisteP2,auswahl,richtung,kraft);
@@ -189,7 +190,8 @@ public class Panzergame {
             break;
             
         } // end of switch
-      } else {                                                                  // Spieler 2 Anweisungen
+      } else {      														  // Spieler 2 Anweisungen
+    	  int  kraft=HelpFunktion.EingabeInt(1,PanzerlisteP2[auswahl-1].getTyp().getRange(),input);
         switch (action) {
           case  0:                                                              // Panzer bewegen
             Feld1.Panzerbewegen(PanzerlisteP2,PanzerlisteP1,auswahl,richtung,kraft);

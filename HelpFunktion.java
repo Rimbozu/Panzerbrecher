@@ -6,7 +6,6 @@ class HelpFunktion{
     while (true) {
       System.out.print("Bereich von "+min+" - "+max+" : ");
       erg = input.nextInt();
-  
       if (erg>=min && erg<=max) {
         break;
       } // end of if
@@ -39,9 +38,9 @@ class HelpFunktion{
   
   public static void showPanzertypen(int [] Wert){
     System.out.println("Panzertypen auswählen ("+Wert[0]+" Punkte zu vergeben):");
-    System.out.println("Typ 1("+Wert[1]+" Punkte): Normale Panzer, 10 HP, 5 DMG");
-    System.out.println("Typ 2("+Wert[2]+" Punkte): Schwerer Panzer, 20 HP, 10 DMG");
-    System.out.println("Typ 3("+Wert[3]+" Punkte): Panzerjaeger, 15 HP, 5 DMG\n");
+    System.out.println("Typ 1("+Wert[1]+" Punkte): Normale Panzer, 10 HP, 5 DMG, Range 10");
+    System.out.println("Typ 2("+Wert[2]+" Punkte): Schwerer Panzer, 15 HP, 10 DMG, Range 10");
+    System.out.println("Typ 3("+Wert[3]+" Punkte): Panzerjaeger, 5 HP, 10 DMG, Range 15\n");
   }
     
   public static int showPanzerliste(Panzer [] Liste,Scanner input){

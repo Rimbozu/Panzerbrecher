@@ -1,6 +1,6 @@
 class Panzertyp {
   
-  private int typNr, hp, dmg, maxhp;
+  private int typNr, hp, dmg, maxhp,range;
   
   public Panzertyp (int typ){
     typNr=typ;
@@ -8,16 +8,18 @@ class Panzertyp {
       case  0: 
         hp=maxhp=10;
         dmg=5;
+        range=10;
         break;  
       case  1:
-        hp=maxhp=20;
+        hp=maxhp=15;
         dmg=10;
+        range=10;
         break;
       case  2:
         hp=maxhp=5;
-        dmg=15;
-        break;  
-        
+        dmg=10;
+        range=15;
+        break;          
     } // end of switch  
   }
   
@@ -37,6 +39,10 @@ class Panzertyp {
     return dmg;
   }
   
+  public int getRange(){
+	    return range;
+	  }
+  
   public void subHP(int damage){
     hp -= damage;
   }
@@ -44,11 +50,11 @@ class Panzertyp {
   public String toString (){
     switch (typNr) {
       case  0: 
-        return "Normale Panzer, HP:  "+hp+", DMG: "+dmg;
+        return "Normale Panzer, HP:  "+hp+", DMG: "+dmg+", Range: "+range;
       case  1:
-        return "Schwerer Panzer, HP:  "+hp+", DMG: "+dmg;
+        return "Schwerer Panzer, HP:  "+hp+", DMG: "+dmg+", Range: "+range;
       case  2:
-        return "Panzerjaeger, HP:  "+hp+", DMG: "+dmg;        
+        return "Panzerjaeger, HP:  "+hp+", DMG: "+dmg+", Range: "+range;        
       default: 
         return "Typ nicht vorhanden";  
         
