@@ -1,99 +1,98 @@
 class Panzer {
-  
-  private Position pos;
-  private Panzertyp typ;
-  private int player;
-  
-    
-  public Panzer(int h, int v,int player, int typ){
-    pos = new Position(h,v);
-    this.player=player;
-    this.typ = new Panzertyp(typ);
-  }
-    
-  public Position getPos(){
-    return pos;  
-  } 
-  
-  public int getPlayer(){
-    return player;
-  }
-  
-  public Panzertyp getTyp(){
-    return typ;  
-  } 
-  
-  public void move(int r, int entf){
-    switch (r) {
-      case  8: 
-        pos.addPosh(-entf);
-        break;
-      case  9: 
-        pos.addPosh(-entf);
-        pos.addPosv(+entf);
-        break;
-      case  6: 
-        pos.addPosv(+entf);
-        break;
-      case  3: 
-        pos.addPosv(+entf);
-        pos.addPosh(+entf);
-        break; 
-      case  2: 
-        pos.addPosh(+entf);
-        break;
-      case  1: 
-        pos.addPosh(+entf);
-        pos.addPosv(-entf);
-        break; 
-      case  4: 
-        pos.addPosv(-entf);
-        break;
-      case  7: 
-        pos.addPosv(-entf);
-        pos.addPosh(-entf);
-        break; 
-        
-    } // end of switch
-  }
-  
-  public Position target(int r,int entf){
-    Position ziel = new Position(0,0);
-    switch (r) {
-      case  8: 
-        ziel.addPosh(getPos().getPosh()-entf);
-        ziel.addPosv(getPos().getPosv());
-        break;
-      case  9: 
-        ziel.addPosh(getPos().getPosh()-entf);
-        ziel.addPosv(getPos().getPosv()+entf);
-        break;  
-      case  6:
-        ziel.addPosh(getPos().getPosh());
-        ziel.addPosv(getPos().getPosv()+entf);
-        break;
-      case  3:
-        ziel.addPosh(getPos().getPosh()+entf);
-        ziel.addPosv(getPos().getPosv()+entf);
-        break; 
-      case  2: 
-        ziel.addPosh(getPos().getPosh()+entf);
-        ziel.addPosv(getPos().getPosv());
-        break;   
-      case  1: 
-        ziel.addPosh(getPos().getPosh()+entf);
-        ziel.addPosv(getPos().getPosv()-entf);
-        break;  
-      case  4: 
-        ziel.addPosh(getPos().getPosh());
-        ziel.addPosv(getPos().getPosv()-entf);
-        break;
-      case  7: 
-        ziel.addPosh(getPos().getPosh()-entf);
-        ziel.addPosv(getPos().getPosv()-entf);  
-        break;   
-    } // end of switch
-    
-    return ziel;
-  }    
+
+	private Position pos;
+	private Panzertyp typ;
+	private int player;
+
+	public Panzer(int h, int v, int player, int typ) {
+		pos = new Position(h, v);
+		this.player = player;
+		this.typ = new Panzertyp(typ);
+	}
+
+	public Position getPos() {
+		return pos;
+	}
+
+	public int getPlayer() {
+		return player;
+	}
+
+	public Panzertyp getTyp() {
+		return typ;
+	}
+
+	public void move(int r, int entf) {
+		switch (r) {
+		case 8:
+			pos.addPosh(-entf);
+			break;
+		case 9:
+			pos.addPosh(-entf);
+			pos.addPosv(+entf);
+			break;
+		case 6:
+			pos.addPosv(+entf);
+			break;
+		case 3:
+			pos.addPosv(+entf);
+			pos.addPosh(+entf);
+			break;
+		case 2:
+			pos.addPosh(+entf);
+			break;
+		case 1:
+			pos.addPosh(+entf);
+			pos.addPosv(-entf);
+			break;
+		case 4:
+			pos.addPosv(-entf);
+			break;
+		case 7:
+			pos.addPosv(-entf);
+			pos.addPosh(-entf);
+			break;
+
+		} // end of switch
+	}
+
+	public Position target(int r, int entf) {
+		Position ziel = new Position(0, 0);
+		switch (r) {
+		case 8:
+			ziel.addPosh(getPos().getPosh() - entf);
+			ziel.addPosv(getPos().getPosv());
+			break;
+		case 9:
+			ziel.addPosh(getPos().getPosh() - entf);
+			ziel.addPosv(getPos().getPosv() + entf);
+			break;
+		case 6:
+			ziel.addPosh(getPos().getPosh());
+			ziel.addPosv(getPos().getPosv() + entf);
+			break;
+		case 3:
+			ziel.addPosh(getPos().getPosh() + entf);
+			ziel.addPosv(getPos().getPosv() + entf);
+			break;
+		case 2:
+			ziel.addPosh(getPos().getPosh() + entf);
+			ziel.addPosv(getPos().getPosv());
+			break;
+		case 1:
+			ziel.addPosh(getPos().getPosh() + entf);
+			ziel.addPosv(getPos().getPosv() - entf);
+			break;
+		case 4:
+			ziel.addPosh(getPos().getPosh());
+			ziel.addPosv(getPos().getPosv() - entf);
+			break;
+		case 7:
+			ziel.addPosh(getPos().getPosh() - entf);
+			ziel.addPosv(getPos().getPosv() - entf);
+			break;
+		} // end of switch
+
+		return ziel;
+	}
 }
