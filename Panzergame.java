@@ -5,8 +5,9 @@ public class Panzergame {
 	public static void main(String[] args) {
 
 		Scanner input = new Scanner(System.in);
+		Panzerlayout Fenster = new Panzerlayout("Panzerbrecher - Das Spiel");
 
-		System.out.println("Willkommen zum Panzerspiel.\n");
+		Fenster.Infofenster.insert("Willkommen zum Panzerspiel.", 0);
 
 		boolean richtig = true;
 		int b = 0, a = 0, c, PAnz, HAnz, h, v, spiel = 0;
@@ -17,25 +18,25 @@ public class Panzergame {
 		Hindernis[] Hindernisliste;
 		Panzer[] PanzerlisteP1, PanzerlisteP2;
 
-		System.out.print("2 Spieler Spielmodus");
+		Fenster.Infofenster.append("\n2 Spieler Spielmodus");
 
-		System.out.println("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
-																		// abfragen
-		b = HelpFunktion.EingabeInt(5, 15, input);
+		Fenster.Infofenster.append("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
+		// abfragen
+		b = HelpFunktion.EingabeInt(5, 15, input, Fenster);
 
-		System.out.println("Wie Lang soll das Spielfeld sein? ");
-		a = HelpFunktion.EingabeInt(b, 40, input);
+		Fenster.Infofenster.append("\nWie Lang soll das Spielfeld sein? ");
+		a = HelpFunktion.EingabeInt(b, 40, input, Fenster);
 
 		c = a * b;
 
 		System.out
 				.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)"); // Panzeranzahl
 																							// abfragen
-		PAnz = HelpFunktion.EingabeInt(1, c / 20, input);
+		PAnz = HelpFunktion.EingabeInt(1, c / 20, input, Fenster);
 
 		System.out.println("\nWie wie viele Hindernisse möchten sie haben? "); // Hindernisse
 																				// abfragen
-		HAnz = HelpFunktion.EingabeInt(0, c / 10, input);
+		HAnz = HelpFunktion.EingabeInt(0, c / 10, input, Fenster);
 
 		TypenWert[0] = c;
 		TypenWert[1] = c / (PAnz * 2);
@@ -47,16 +48,18 @@ public class Panzergame {
 		HelpFunktion.showPanzertypen(TypenWert);
 
 		System.out.println("Anzahl Typ 1 Panzer:");
-		T1P1 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input);
+		T1P1 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input,
+				Fenster);
 		Restpunkte = TypenWert[0] - T1P1 * TypenWert[1];
 		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
 		System.out.println("Anzahl Typ 2 Panzer:");
-		T2P1 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input);
+		T2P1 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input,
+				Fenster);
 		Restpunkte -= T2P1 * TypenWert[2];
 		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
 		System.out.println("Anzahl Typ 3 Panzer:");
 		T3P1 = HelpFunktion.EingabeInt((Restpunkte) / TypenWert[3],
-				(Restpunkte) / TypenWert[3], input);
+				(Restpunkte) / TypenWert[3], input, Fenster);
 
 		Restpunkte = TypenWert[0];
 		System.out.println("\nSpieler 2 Panzerauswahl:"); // Panzerauswahl
@@ -64,16 +67,18 @@ public class Panzergame {
 		HelpFunktion.showPanzertypen(TypenWert);
 
 		System.out.println("Anzahl Typ 1 Panzer:");
-		T1P2 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input);
+		T1P2 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input,
+				Fenster);
 		Restpunkte -= T1P2 * TypenWert[1];
 		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
 		System.out.println("Anzahl Typ 2 Panzer:");
-		T2P2 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input);
+		T2P2 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input,
+				Fenster);
 		Restpunkte -= T2P2 * TypenWert[2];
 		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
 		System.out.println("Anzahl Typ 3 Panzer:");
 		T3P2 = HelpFunktion.EingabeInt((Restpunkte) / TypenWert[3],
-				(Restpunkte) / TypenWert[3], input);
+				(Restpunkte) / TypenWert[3], input, Fenster);
 
 		PanzerlisteP1 = new Panzer[T1P1 + T2P1 + T3P1]; // 1. Inizialisieren
 		PanzerlisteP2 = new Panzer[T1P2 + T2P2 + T3P2];
@@ -189,21 +194,24 @@ public class Panzergame {
 			System.out.println("Ihre Panzer:\n");
 
 			if (spiel % 2 == 1) {
-				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP1, input);
+				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP1, input,
+						Fenster);
 			} else {
-				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP2, input);
+				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP2, input,
+						Fenster);
 			} // end of if-else
 
 			System.out.println("Panzer bewegen(0) oder schießen(1)?"); // Aktionsparameter
 																		// eingeben
-			int action = HelpFunktion.EingabeInt(0, 1, input);
+			int action = HelpFunktion.EingabeInt(0, 1, input, Fenster);
 			System.out.println("Richtung?(Numpad Richtig)");
-			int richtung = HelpFunktion.EingabeInt(1, 9, input);
+			int richtung = HelpFunktion.EingabeInt(1, 9, input, Fenster);
 			System.out.println("Kraft? ");
 
 			if (spiel % 2 == 1) { // Spieler 1 Anweisungen
 				int kraft = HelpFunktion.EingabeInt(1,
-						PanzerlisteP1[auswahl - 1].getTyp().getRange(), input);
+						PanzerlisteP1[auswahl - 1].getTyp().getRange(), input,
+						Fenster);
 				switch (action) {
 				case 0: // Panzer bewegen
 					Feld1.Panzerbewegen(PanzerlisteP1, PanzerlisteP2, auswahl,
@@ -217,7 +225,8 @@ public class Panzergame {
 				} // end of switch
 			} else { // Spieler 2 Anweisungen
 				int kraft = HelpFunktion.EingabeInt(1,
-						PanzerlisteP2[auswahl - 1].getTyp().getRange(), input);
+						PanzerlisteP2[auswahl - 1].getTyp().getRange(), input,
+						Fenster);
 				switch (action) {
 				case 0: // Panzer bewegen
 					Feld1.Panzerbewegen(PanzerlisteP2, PanzerlisteP1, auswahl,
@@ -232,7 +241,7 @@ public class Panzergame {
 			} // end of if-else
 
 			System.out.print("Aktuelles Spielfeld anzeigen? (ja=1): ");
-			int feld = HelpFunktion.EingabeInt(0, 1, input);
+			int feld = HelpFunktion.EingabeInt(0, 1, input, Fenster);
 
 			if (feld == 1) {
 				Feld1.print();
