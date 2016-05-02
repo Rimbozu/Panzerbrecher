@@ -3,8 +3,8 @@ class Hindernis {
 	private Position pos;
 	private int art;
 
-	public Hindernis(int h, int v, int art) {
-		pos = new Position(h, v);
+	public Hindernis(int y, int x, int art) {
+		pos = new Position(y, x);
 		this.art = art;
 	}
 

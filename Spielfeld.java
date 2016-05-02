@@ -9,23 +9,23 @@ class Spielfeld {
 		this(20, 50);
 	}
 
-	public Spielfeld(int v, int h) {
-		feld = new int[v][h];
+	public Spielfeld(int y, int x) {
+		feld = new int[y][x];
 	}
 
-	public Spielfeld(int v, int h, Panzer[] Liste1, Panzer[] Liste2,
+	public Spielfeld(int y, int x, Panzer[] Liste1, Panzer[] Liste2,
 			Hindernis[] Liste3) {
-		this(v, h);
+		this(y, x);
 		PListe1 = Liste1;
 		PListe2 = Liste2;
 		HListe = Liste3;
 	}
 
-	public int getSeiteH() {
+	public int getSeiteX() {
 		return feld.length;
 	}
 
-	public int getSeiteV() {
+	public int getSeiteY() {
 		return feld[0].length;
 	}
 
@@ -50,18 +50,18 @@ class Spielfeld {
 
 		for (int k = 1; k <= kraft; k++) {
 			ziel = new Position(Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosh(), Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosv());
+					.getPosY(), Panzerliste1[auswahl - 1].target(richtung, k)
+					.getPosX());
 			for (int i = 0; i < HListe.length; i++) {
-				if (ziel.getPosh() == HListe[i].getPos().getPosh()
-						&& ziel.getPosv() == HListe[i].getPos().getPosv()) {
+				if (ziel.getPosY() == HListe[i].getPos().getPosY()
+						&& ziel.getPosX() == HListe[i].getPos().getPosX()) {
 					hi = k;
 					break;
 				} // end of if
 			} // end of for
 
-			if (ziel.getPosh() < 0 || ziel.getPosh() >= getSeiteH()
-					|| ziel.getPosv() < 0 || ziel.getPosv() >= getSeiteV()) {
+			if (ziel.getPosY() < 0 || ziel.getPosY() >= getSeiteX()
+					|| ziel.getPosX() < 0 || ziel.getPosX() >= getSeiteY()) {
 				Panzerliste1[auswahl - 1].move(richtung, (k - 1));
 				Panzerliste1[auswahl - 1].getTyp().subHP(kraft / 2);
 				System.out
@@ -144,13 +144,13 @@ class Spielfeld {
 
 		for (int k = 1; k <= kraft; k++) {
 			ziel = new Position(Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosh(), Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosv());
+					.getPosY(), Panzerliste1[auswahl - 1].target(richtung, k)
+					.getPosX());
 
 			for (int i = 0; i < HListe.length; i++) { // Hinderniss Test
 				if (HListe[i].getArt() == 0) {
-					if (ziel.getPosh() == HListe[i].getPos().getPosh()
-							&& ziel.getPosv() == HListe[i].getPos().getPosv()) {
+					if (ziel.getPosY() == HListe[i].getPos().getPosY()
+							&& ziel.getPosX() == HListe[i].getPos().getPosX()) {
 						hi = k;
 						break;
 					} // end of if
@@ -164,8 +164,8 @@ class Spielfeld {
 																	// Panzer
 																	// Test
 
-			if (ziel.getPosh() < 0 || ziel.getPosh() >= getSeiteH()
-					|| ziel.getPosv() < 0 || ziel.getPosv() >= getSeiteV()) {
+			if (ziel.getPosY() < 0 || ziel.getPosY() >= getSeiteX()
+					|| ziel.getPosX() < 0 || ziel.getPosX() >= getSeiteY()) {
 				System.out.println("Du hast gegen den Kartenrand geschossen!");
 				break;
 			} // end of if
@@ -218,7 +218,7 @@ class Spielfeld {
 
 		bild = "  ";
 
-		for (int i = 0; i < getSeiteV(); i++) {
+		for (int i = 0; i < getSeiteY(); i++) {
 			if (i % 5 == 0) {
 				bild = bild + i / 5;
 			} else {
@@ -229,21 +229,21 @@ class Spielfeld {
 		System.out.println("\n" + bild);
 		bild = "";
 
-		for (int i = 0; i < getSeiteV(); i++) {
+		for (int i = 0; i < getSeiteY(); i++) {
 			bild = bild + "+";
 		} // end of for
 
 		System.out.println(" +" + bild + "+");
 		bild = "";
 
-		for (int i = 0; i < getSeiteH(); i++) {
-			for (int j = 0; j < getSeiteV(); j++) {
+		for (int i = 0; i < getSeiteX(); i++) {
+			for (int j = 0; j < getSeiteY(); j++) {
 				belegt = false;
 				Position hier = new Position(i, j);
 
 				for (int t = 0; t < getPListe1(); t++) {
-					if (hier.getPosh() == PListe1[t].getPos().getPosh()
-							&& hier.getPosv() == PListe1[t].getPos().getPosv()) {
+					if (hier.getPosY() == PListe1[t].getPos().getPosY()
+							&& hier.getPosX() == PListe1[t].getPos().getPosX()) {
 						if (PListe1[t].getTyp().getHP() <= 0) {
 							bild = bild + "h";
 						} else {
@@ -282,9 +282,9 @@ class Spielfeld {
 
 				if (belegt == false) {
 					for (int t = 0; t < getPListe2(); t++) {
-						if (hier.getPosh() == PListe2[t].getPos().getPosh()
-								&& hier.getPosv() == PListe2[t].getPos()
-										.getPosv()) {
+						if (hier.getPosY() == PListe2[t].getPos().getPosY()
+								&& hier.getPosX() == PListe2[t].getPos()
+										.getPosX()) {
 							if (PListe2[t].getTyp().getHP() <= 0) {
 								bild = bild + "h";
 							} else {
@@ -323,9 +323,9 @@ class Spielfeld {
 
 				if (belegt == false) {
 					for (int t = 0; t < getHListe(); t++) {
-						if (hier.getPosh() == HListe[t].getPos().getPosh()
-								&& hier.getPosv() == HListe[t].getPos()
-										.getPosv()) {
+						if (hier.getPosY() == HListe[t].getPos().getPosY()
+								&& hier.getPosX() == HListe[t].getPos()
+										.getPosX()) {
 
 							switch (HListe[t].getArt()) {
 							case 0:
@@ -357,7 +357,7 @@ class Spielfeld {
 			bild = "";
 		} // end of for
 
-		for (int i = 0; i < getSeiteV(); i++) {
+		for (int i = 0; i < getSeiteY(); i++) {
 			bild = bild + "+";
 		} // end of for
 
@@ -365,7 +365,7 @@ class Spielfeld {
 
 		bild = "  ";
 
-		for (int i = 0; i < getSeiteV(); i++) {
+		for (int i = 0; i < getSeiteY(); i++) {
 			if (i % 5 == 0) {
 				bild = bild + i / 5;
 			} else {

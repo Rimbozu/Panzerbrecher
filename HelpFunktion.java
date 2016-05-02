@@ -19,8 +19,8 @@ class HelpFunktion {
 	public static boolean checkListeP(int x, int y, int Anz, Panzer[] PListe) {
 		boolean erg = true;
 		for (int i = 0; i < Anz; i++) {
-			if (x == PListe[i].getPos().getPosh()
-					&& y == PListe[i].getPos().getPosv()) {
+			if (x == PListe[i].getPos().getPosY()
+					&& y == PListe[i].getPos().getPosX()) {
 				erg = false;
 			} // end of if
 		} // end of for
@@ -30,8 +30,8 @@ class HelpFunktion {
 	public static boolean checkListeH(int x, int y, int Anz, Hindernis[] HListe) {
 		boolean erg = true;
 		for (int i = 0; i < Anz; i++) {
-			if (x == HListe[i].getPos().getPosh()
-					&& y == HListe[i].getPos().getPosv()) {
+			if (x == HListe[i].getPos().getPosY()
+					&& y == HListe[i].getPos().getPosX()) {
 				erg = false;
 			} // end of if
 		} // end of for
@@ -83,8 +83,8 @@ class HelpFunktion {
 																			// Panzer
 		int[] erg = new int[2];
 		for (int i = 0; i < Liste.length; i++) {
-			if (ziel.getPosh() == Liste[i].getPos().getPosh()
-					&& ziel.getPosv() == Liste[i].getPos().getPosv()) {
+			if (ziel.getPosY() == Liste[i].getPos().getPosY()
+					&& ziel.getPosX() == Liste[i].getPos().getPosX()) {
 				erg[0] = k;
 				erg[1] = i;
 				break;
