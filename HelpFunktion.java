@@ -1,12 +1,10 @@
 import java.util.Scanner;
 
 class HelpFunktion {
-	public static int EingabeInt(int min, int max, Scanner input,
-			Panzerlayout Fenster) {
+	public static int EingabeInt(int min, int max, Scanner input) {
 		int erg = 0;
 		while (true) {
-			Fenster.EingabeInfo.insert("Bereich von " + min + " - " + max
-					+ " : ", 0);
+			System.out.print("Bereich von " + min + " - " + max + " : ");
 			erg = input.nextInt();
 			if (erg >= min && erg <= max) {
 				break;
@@ -51,8 +49,7 @@ class HelpFunktion {
 				+ " Punkte): Panzerjaeger   ,  5 HP, 10 DMG, Range 15\n");
 	}
 
-	public static int showPanzerliste(Panzer[] Liste, Scanner input,
-			Panzerlayout Fenster) {
+	public static int showPanzerliste(Panzer[] Liste, Scanner input) {
 		int auswahl = 0;
 		for (int i = 1; i - 1 < Liste.length; i++) { // Verfügbare Panzer1
 														// anzeigen
@@ -67,7 +64,7 @@ class HelpFunktion {
 
 		System.out.println("\nPanzernummer fuer die Auswahl eingeben."); // Panzer
 																			// auswaehlen
-		auswahl = EingabeInt(1, Liste.length, input, Fenster);
+		auswahl = EingabeInt(1, Liste.length, input);
 
 		for (int i = 0; i < Liste.length; i++) { // Test, ob zerstoert
 			if (Liste[auswahl - 1].getTyp().getHP() <= 0) {
