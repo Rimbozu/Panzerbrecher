@@ -240,7 +240,7 @@ public class Panzergame {
 			if (feld == 1) {
 				Feld1.print();
 			} // end of if
-
+			Fenster.repaint();
 			exit = HelpFunktion.TestSpielende(PanzerlisteP1);
 			exit = HelpFunktion.TestSpielende(PanzerlisteP2);
 
