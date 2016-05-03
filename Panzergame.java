@@ -9,7 +9,7 @@ public class Panzergame {
 		System.out.println("Willkommen zum Panzerspiel.\n");
 
 		boolean richtig = true;
-		int b = 0, a = 0, c, PAnz, HAnz, h, v, spiel = 0;
+		int y = 0, x = 0, c, PAnz, HAnz, Py, Px, spiel = 0;
 		int[] TypenWert = new int[4];
 		int Restpunkte = 0;
 		int T1P1, T2P1, T3P1, T1P2, T2P2, T3P2;
@@ -21,12 +21,12 @@ public class Panzergame {
 
 		System.out.println("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
 																		// abfragen
-		b = HelpFunktion.EingabeInt(5, 15, input);
+		y = HelpFunktion.EingabeInt(5, 15, input);
 
 		System.out.println("Wie Lang soll das Spielfeld sein? ");
-		a = HelpFunktion.EingabeInt(b, 40, input);
+		x = HelpFunktion.EingabeInt(y, 40, input);
 
-		c = a * b;
+		c = x * y;
 
 		System.out
 				.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)"); // Panzeranzahl
@@ -79,24 +79,26 @@ public class Panzergame {
 		PanzerlisteP2 = new Panzer[T1P2 + T2P2 + T3P2];
 		Hindernisliste = new Hindernis[HAnz];
 
-		Spielfeld Feld1 = new Spielfeld(b, a, PanzerlisteP1, PanzerlisteP2,
+		Spielfeld Feld1 = new Spielfeld(y, x, PanzerlisteP1, PanzerlisteP2,
+				Hindernisliste);
+		FeldGrafik Fenster = new FeldGrafik(y, x, PanzerlisteP1, PanzerlisteP2,
 				Hindernisliste);
 
 		for (int i = 0; i < PanzerlisteP1.length; i++) { // Panzer Spieler 1
 															// erzeugen
-			h = (int) (Math.random() * b);
-			v = (int) (Math.random() * (a * 30 / 100));
+			Py = (int) (Math.random() * y);
+			Px = (int) (Math.random() * (x * 30 / 100));
 
-			richtig = HelpFunktion.checkListeP(h, v, i, PanzerlisteP1);
+			richtig = HelpFunktion.checkListeP(Py, Px, i, PanzerlisteP1);
 			if (richtig) {
 
 				if (i + 1 <= T1P1) {
-					PanzerlisteP1[i] = new Panzer(h, v, 1, 0);
+					PanzerlisteP1[i] = new Panzer(Py, Px, 1, 0);
 				} else {
 					if (i + 1 - T1P1 <= T2P1) {
-						PanzerlisteP1[i] = new Panzer(h, v, 1, 1);
+						PanzerlisteP1[i] = new Panzer(Py, Px, 1, 1);
 					} else {
-						PanzerlisteP1[i] = new Panzer(h, v, 1, 2);
+						PanzerlisteP1[i] = new Panzer(Py, Px, 1, 2);
 					}// end of if-else
 				} // end of if-else
 
@@ -107,25 +109,25 @@ public class Panzergame {
 		} // end of for
 
 		richtig = true;
-		h = v = 0;
+		Py = Px = 0;
 
 		for (int i = 0; i < PanzerlisteP2.length; i++) { // Panzer Spieler 2
 															// erzeugen
-			h = (int) (Math.random() * b);
-			v = (int) ((Math.random() * (a * 30 / 100)) + (a * 70 / 100));
+			Py = (int) (Math.random() * y);
+			Px = (int) ((Math.random() * (x * 30 / 100)) + (x * 70 / 100));
 
-			richtig = HelpFunktion.checkListeP(h, v, PanzerlisteP1.length,
+			richtig = HelpFunktion.checkListeP(Py, Px, PanzerlisteP1.length,
 					PanzerlisteP1);
 			if (richtig) {
-				richtig = HelpFunktion.checkListeP(h, v, i, PanzerlisteP2);
+				richtig = HelpFunktion.checkListeP(Py, Px, i, PanzerlisteP2);
 				if (richtig) {
 					if (i + 1 <= T1P2) {
-						PanzerlisteP2[i] = new Panzer(h, v, 2, 0);
+						PanzerlisteP2[i] = new Panzer(Py, Px, 2, 0);
 					} else {
 						if (i + 1 - T1P2 <= T2P2) {
-							PanzerlisteP2[i] = new Panzer(h, v, 2, 1);
+							PanzerlisteP2[i] = new Panzer(Py, Px, 2, 1);
 						} else {
-							PanzerlisteP2[i] = new Panzer(h, v, 2, 2);
+							PanzerlisteP2[i] = new Panzer(Py, Px, 2, 2);
 						}// end of if-else
 					} // end of if-else
 
@@ -139,23 +141,24 @@ public class Panzergame {
 		} // end of for
 
 		richtig = true;
-		h = v = 0;
+		Py = Px = 0;
 
 		// Hindernisse erzeugen
 		for (int i = 0; i < HAnz; i++) {
-			h = (int) (Math.random() * b);
-			v = (int) (Math.random() * (a * 70 / 100) + (a * 15 / 100));
+			Py = (int) (Math.random() * y);
+			Px = (int) (Math.random() * (x * 70 / 100) + (x * 15 / 100));
 
-			richtig = HelpFunktion.checkListeP(h, v, PanzerlisteP1.length,
+			richtig = HelpFunktion.checkListeP(Py, Px, PanzerlisteP1.length,
 					PanzerlisteP1);
 			if (richtig) {
-				richtig = HelpFunktion.checkListeP(h, v, PanzerlisteP2.length,
-						PanzerlisteP2);
+				richtig = HelpFunktion.checkListeP(Py, Px,
+						PanzerlisteP2.length, PanzerlisteP2);
 				if (richtig) {
-					richtig = HelpFunktion.checkListeH(h, v, i, Hindernisliste);
+					richtig = HelpFunktion.checkListeH(Py, Px, i,
+							Hindernisliste);
 					if (richtig) {
 
-						Hindernisliste[i] = new Hindernis(h, v,
+						Hindernisliste[i] = new Hindernis(Py, Px,
 								(int) (Math.random() * 2));
 					} else {
 						i -= 1;

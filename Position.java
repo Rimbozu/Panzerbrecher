@@ -1,40 +1,40 @@
 class Position {
 
-	private int h, v;
+	private int y, x;
 
-	public Position(int h, int v) {
-		this.h = h;
-		this.v = v;
+	public Position(int y, int x) {
+		this.y = y;
+		this.x = x;
 	}
 
 	public String getPos() {
-		String h = new String();
-		String v = new String();
-		h = h + this.h;
-		v = v + this.v;
+		String y = new String();
+		String x = new String();
+		y = y + this.y;
+		x = x + this.x;
 
-		if (h.length() == 1) {
-			h = " " + h;
+		if (y.length() == 1) {
+			y = " " + y;
 		}
-		if (v.length() == 1) {
-			v = " " + v;
+		if (x.length() == 1) {
+			x = " " + x;
 		}
-		return "(" + h + "," + v + ")";
+		return "(" + y + "," + x + ")";
 	}
 
-	public int getPosh() {
-		return h;
+	public int getPosY() {
+		return y;
 	}
 
-	public int getPosv() {
-		return v;
+	public int getPosX() {
+		return x;
 	}
 
-	public void addPosh(int a) {
-		h += a;
+	public void addPosY(int a) {
+		y += a;
 	}
 
-	public void addPosv(int a) {
-		v += a;
+	public void addPosX(int a) {
+		x += a;
 	}
 }
