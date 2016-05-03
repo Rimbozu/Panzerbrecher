@@ -21,10 +21,10 @@ public class Panzergame {
 
 		System.out.println("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
 																		// abfragen
-		y = HelpFunktion.EingabeInt(5, 15, input);
+		y = HelpFunktion.EingabeInt(5, 20, input);
 
 		System.out.println("Wie Lang soll das Spielfeld sein? ");
-		x = HelpFunktion.EingabeInt(y, 40, input);
+		x = HelpFunktion.EingabeInt(y, 30, input);
 
 		c = x * y;
 

@@ -8,6 +8,8 @@ class Hindernis {
 		this.art = art;
 	}
 
+	// 0 = Berg
+	// 1 = Fluss
 	public int getArt() {
 		return art;
 	}
