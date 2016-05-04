@@ -3,7 +3,8 @@ import java.awt.Frame;
 import java.awt.Graphics;
 
 public class FeldGrafik extends Frame {
-	int abst = 31, obj = 29, oentf = 90;
+
+	int feld, abst, obj, oentf = 90;
 	private int y, x, zx, zy;
 	private Panzer[] PListe1;
 	private Panzer[] PListe2;
@@ -14,8 +15,12 @@ public class FeldGrafik extends Frame {
 		super("Panzerbrecher - Das Spiel");
 		zx = x;
 		zy = y;
-		this.x = x * obj + (x + 1) * abst;
-		this.y = y * obj + (y + 1) * abst + oentf + 10;
+		this.y = 900;
+		feld = (this.y - 60) / y;
+		this.x = feld * x + 20;
+		abst = feld * 2 / 3;
+		obj = feld * 1 / 3;
+
 		PListe1 = Liste1;
 		PListe2 = Liste2;
 		HListe = Liste3;
@@ -29,46 +34,47 @@ public class FeldGrafik extends Frame {
 	}
 
 	public void paint(Graphics g) {
+
+		int oben = getInsets().top;
+		int unten = getInsets().bottom;
+		int links = getInsets().left;
+		int rechts = getInsets().right;
+
 		int feldt, feldu;
-		int abst1 = (abst + 1) / 2;
+		int abst1 = getInsets().left;
 		int abst2 = abst1 + abst1;
-		int abst3 = abst1 - abst1;
-		int abst4 = abst + obj;
 
 		// Horizontale Striche
-		g.drawString("Fenstergröße: " + x + " x " + y + "", 20, 70);
-		g.drawLine(abst1, abst1 + oentf, x - abst1, abst1 + oentf);
-		g.drawLine(abst1, abst1 + zy * abst4 + oentf, x - abst1, abst1 + zy
-				* abst4 + oentf);
+		g.drawLine(links, oben, x - rechts, oben);
+		g.drawLine(links, y - unten, x - rechts, y - unten);
 		g.setColor(Color.lightGray);
 		for (int t = 1; t < zy; t++) {
-			g.drawLine(abst1, abst1 + t * abst4 + oentf, abst2, abst1 + t
-					* abst4 + oentf);
-			g.drawLine(x - abst2, abst1 + t * abst4 + oentf, x - abst1, abst1
-					+ t * abst4 + oentf);
+			g.drawLine(links, t * feld + oben, feld / 4 + links, t * feld
+					+ oben);
+			g.drawLine(x - rechts - feld / 4, t * feld + oben, x - rechts, t
+					* feld + oben);
 			for (int u = 1; u < zx; u++) {
-				g.drawLine(abst3 + u * abst4, abst1 + t * abst4 + oentf, abst2
-						+ u * abst4, abst1 + t * abst4 + oentf);
+				g.drawLine(links + u * feld - feld / 4, t * feld + oben, abst2
+						+ u * feld + feld / 4, t * feld + oben);
 			}
 
 		} // end of for
 		g.setColor(Color.black);
 		// Vertikale Striche
-		g.drawLine(abst1, abst1 + oentf, abst1, abst1 + zy * abst4 + oentf);
-		g.drawLine(abst1 + zx * abst4, abst1 + oentf, abst1 + zx * abst4, abst1
-				+ zy * abst4 + oentf);
+		g.drawLine(links, oben, links, y - unten);
+		g.drawLine(x - rechts, oben, x - rechts, y - unten);
 		g.setColor(Color.lightGray);
 		for (int t = 1; t < zx; t++) {
 
-			g.drawLine(abst1 + t * abst4, abst1 + oentf, abst1 + t * abst4,
-					abst2 + oentf);
-			g.drawLine(abst1 + t * abst4, y - 25 - obj, abst1 + t * abst4,
-					y - 25);
+			g.drawLine(links + t * feld, oben, links + t * feld, feld / 4
+					+ oben);
+			g.drawLine(links + t * feld, y - unten - feld / 4,
+					links + t * feld, y - unten);
 
 			for (int u = 1; u < zy; u++) {
 
-				g.drawLine(abst1 + t * abst4, abst3 + u * abst4 + oentf, abst1
-						+ t * abst4, abst2 + u * abst4 + oentf);
+				g.drawLine(links + t * feld, u * feld - feld / 4 + oben, links
+						+ t * feld, u * feld + feld / 4 + oben);
 			}
 		} // end of for
 		for (int t = 0; t < PListe1.length; t++) {
@@ -125,24 +131,24 @@ public class FeldGrafik extends Frame {
 	}
 
 	private void GrafikNormalerPanzer(int x, int y, Graphics g) {
-		int bildx = x * obj + (x + 1) * abst;
-		int bildy = oentf + (y * obj) + (y + 1) * abst;
+		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
+		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx + (obj * 1 / 3), bildy, obj * 1 / 3, obj * 2 / 3);
 
 	}
 
 	private void GrafikSchwererPanzer(int x, int y, Graphics g) {
-		int bildx = x * obj + (x + 1) * abst;
-		int bildy = oentf + (y * obj) + (y + 1) * abst;
+		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
+		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx, bildy, obj, obj);
 
 	}
 
 	private void GrafikPanzerjaeger(int x, int y, Graphics g) {
-		int bildx = x * obj + (x + 1) * abst;
-		int bildy = oentf + (y * obj) + (y + 1) * abst;
+		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
+		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx, bildy, obj * 3 / 4, obj * 3 / 4);
 
@@ -150,8 +156,8 @@ public class FeldGrafik extends Frame {
 
 	private void GrafikFluss(int x, int y, Graphics g) {
 		g.setColor(Color.blue);
-		int bildx = x * obj + (x + 1) * abst;
-		int bildy = oentf + (y * obj) + (y + 1) * abst;
+		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
+		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
 
 		int[] xp1 = { bildx, bildx + obj * 1 / 9, bildx + obj * 2 / 9,
 				bildx + obj * 3 / 9, bildx + obj * 4 / 9, bildx + obj * 5 / 9,
@@ -179,8 +185,8 @@ public class FeldGrafik extends Frame {
 
 	public void GrafikBerg(int x, int y, Graphics g) {
 		g.setColor(Color.black);
-		int bildx = x * obj + (x + 1) * abst;
-		int bildy = oentf + (y * obj) + (y + 1) * abst;
+		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
+		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
 
 		int[] xp = { bildx, (bildx + obj / 4), (bildx + obj / 2),
 				(bildx + obj * 3 / 4), bildx + obj };
