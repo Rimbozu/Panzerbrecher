@@ -5,10 +5,13 @@ class HelpFunktion {
 		int erg = 0;
 		while (true) {
 			System.out.print("Bereich von " + min + " - " + max + " : ");
-			erg = input.nextInt();
-			if (erg >= min && erg <= max) {
-				break;
-			} // end of if
+			try {
+				erg = Integer.parseInt(input.next());
+			} catch (Exception e) {
+				// TODO: handle exception
+				erg = 0;
+			}
+			if (erg >= min && erg <= max) break;
 
 			System.out.println("Eingegebener Wert nicht im Bereich.");
 			System.out.println("Neuen Wert bitte eingeben.");
