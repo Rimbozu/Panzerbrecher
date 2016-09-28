@@ -7,6 +7,8 @@ public class Panzergame {
 		Scanner input = new Scanner(System.in);
 
 		Infofenster IFenster = new Infofenster();
+		EventManager event = new EventManager();
+
 		IFenster.writeString("Willkommen zum Panzerspiel.", 0);
 		System.out.println("Willkommen zum Panzerspiel.\n");
 
@@ -91,6 +93,14 @@ public class Panzergame {
 		FeldGrafik Fenster = new FeldGrafik(y, x, PanzerlisteP1, PanzerlisteP2,// Grafikfeld
 																				// erzeugen
 				Hindernisliste);
+
+		Fenster.register(event);
+		Fenster.register(IFenster);
+		IFenster.register(event);
+		IFenster.register(Fenster);
+		event.register(Fenster);
+		event.register(IFenster);
+
 		for (int i = 0; i < PanzerlisteP1.length; i++) { // Panzer Spieler 1
 															// erzeugen
 

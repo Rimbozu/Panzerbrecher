@@ -6,9 +6,13 @@ import java.awt.Point;
 
 public class FeldGrafik extends Frame {
 
+	EventManager EM = null;
+	Infofenster F = null;
+	public int oben, unten, links, rechts;
+
 	static Dimension screenDim;
 	int feld, abst, obj, oentf = 50;
-	private int y, x, spalten, zeilen;
+	private int y, x, spalten, zeilen, Sx, Sy;
 	private Panzer[] PListe1;
 	private Panzer[] PListe2;
 	private Hindernis[] HListe;
@@ -37,14 +41,30 @@ public class FeldGrafik extends Frame {
 		setVisible(true);
 		addWindowListener(new FensterFunktion());
 
+		oben = getInsets().top;
+		unten = getInsets().bottom;
+		links = getInsets().left;
+		rechts = getInsets().right;
+
+	}
+
+	public void register(EventManager c) {
+		EM = c; // event-handler
+		addKeyListener(c); // registrierung fuer key-events
+		addMouseListener(c); // registrierung fuer mouse-events
+	}
+
+	public void register(Infofenster c) {
+		F = c; // event-handler
+	}
+
+	public void FeldSelect(int x, int y) {
+		Sx = x;
+		Sy = y;
+		repaint();
 	}
 
 	public void paint(Graphics g) {
-
-		int oben = getInsets().top;
-		int unten = getInsets().bottom;
-		int links = getInsets().left;
-		int rechts = getInsets().right;
 
 		g.setColor(Color.gray);
 		for (int i = 0; i < zeilen; i++) {
@@ -52,7 +72,16 @@ public class FeldGrafik extends Frame {
 				g.drawRect(links + (j * feld), oben + (i * feld), feld, feld);
 		}
 
+		g.setColor(Color.YELLOW);
+		g.drawRect(links + (Sx * feld), oben + (Sy * feld), feld, feld);
+
 		for (int t = 0; t < PListe1.length; t++) {
+
+			if (PListe1[t].getPos().getPosX() == Sx
+					&& PListe1[t].getPos().getPosY() == Sy) {
+				F.Panzerinfo(PListe1, t);
+			}
+
 			g.setColor(Color.green);
 			switch (PListe1[t].getTyp().getTypNr()) {
 			case 0:
@@ -71,6 +100,12 @@ public class FeldGrafik extends Frame {
 		} // end of for
 
 		for (int t = 0; t < PListe2.length; t++) {
+
+			if (PListe2[t].getPos().getPosX() == Sx
+					&& PListe2[t].getPos().getPosY() == Sy) {
+				F.Panzerinfo(PListe2, t);
+			}
+
 			g.setColor(Color.red);
 			switch (PListe2[t].getTyp().getTypNr()) {
 			case 0:
@@ -86,10 +121,7 @@ public class FeldGrafik extends Frame {
 						.getPos().getPosY(), g);
 				break;
 			} // end of switch
-				// g.fillRect((PListe2[t].getPos().getPosX() * obj)
-				// + ((PListe2[t].getPos().getPosX() + 1) * abst), oentf
-				// + (PListe2[t].getPos().getPosY() * obj)
-				// + ((PListe2[t].getPos().getPosY() + 1) * abst), obj, obj);
+
 		} // end of for
 
 		for (int t = 0; t < HListe.length; t++) {
@@ -106,24 +138,24 @@ public class FeldGrafik extends Frame {
 	}
 
 	private void GrafikNormalerPanzer(int x, int y, Graphics g) {
-		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
-		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
+		int bildx = links + x * obj + (x) * abst + abst / 2;
+		int bildy = oben + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx + (obj * 1 / 3), bildy, obj * 1 / 3, obj * 2 / 3);
 
 	}
 
 	private void GrafikSchwererPanzer(int x, int y, Graphics g) {
-		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
-		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
+		int bildx = links + x * obj + (x) * abst + abst / 2;
+		int bildy = oben + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx, bildy, obj, obj);
 
 	}
 
 	private void GrafikPanzerjaeger(int x, int y, Graphics g) {
-		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
-		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
+		int bildx = links + x * obj + (x) * abst + abst / 2;
+		int bildy = oben + (y * obj) + (y) * abst + abst / 2;
 
 		g.fillRect(bildx, bildy, obj * 3 / 4, obj * 3 / 4);
 
@@ -131,8 +163,8 @@ public class FeldGrafik extends Frame {
 
 	private void GrafikFluss(int x, int y, Graphics g) {
 		g.setColor(Color.blue);
-		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
-		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
+		int bildx = links + x * obj + (x) * abst + abst / 2;
+		int bildy = oben + (y * obj) + (y) * abst + abst / 2;
 
 		int[] xp1 = { bildx, bildx + obj * 1 / 9, bildx + obj * 2 / 9,
 				bildx + obj * 3 / 9, bildx + obj * 4 / 9, bildx + obj * 5 / 9,
@@ -160,8 +192,8 @@ public class FeldGrafik extends Frame {
 
 	public void GrafikBerg(int x, int y, Graphics g) {
 		g.setColor(Color.black);
-		int bildx = getInsets().left + x * obj + (x) * abst + abst / 2;
-		int bildy = getInsets().top + (y * obj) + (y) * abst + abst / 2;
+		int bildx = links + x * obj + (x) * abst + abst / 2;
+		int bildy = oben + (y * obj) + (y) * abst + abst / 2;
 
 		int[] xp = { bildx, (bildx + obj / 4), (bildx + obj / 2),
 				(bildx + obj * 3 / 4), bildx + obj };
