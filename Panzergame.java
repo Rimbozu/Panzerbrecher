@@ -6,6 +6,8 @@ public class Panzergame {
 
 		Scanner input = new Scanner(System.in);
 
+		Infofenster IFenster = new Infofenster();
+		IFenster.writeString("Willkommen zum Panzerspiel.", 0);
 		System.out.println("Willkommen zum Panzerspiel.\n");
 
 		boolean richtig = true;
@@ -17,6 +19,7 @@ public class Panzergame {
 		Hindernis[] Hindernisliste;
 		Panzer[] PanzerlisteP1, PanzerlisteP2;
 
+		IFenster.writeString("2 Spieler Spielmodus", 1);
 		System.out.print("2 Spieler Spielmodus");
 
 		System.out.println("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
@@ -35,6 +38,7 @@ public class Panzergame {
 
 		System.out.println("\nWie wie viele Hindernisse möchten sie haben? "); // Hindernisse
 																				// abfragen
+
 		HAnz = HelpFunktion.EingabeInt(0, c / 10, input);
 
 		TypenWert[0] = c;
@@ -44,6 +48,7 @@ public class Panzergame {
 
 		System.out.println("\nSpieler 1 Panzerauswahl:"); // Panzerauswahl
 															// Spieler 1
+
 		HelpFunktion.showPanzertypen(TypenWert);
 
 		System.out.println("Anzahl Typ 1 Panzer:");
@@ -61,6 +66,7 @@ public class Panzergame {
 		Restpunkte = TypenWert[0];
 		System.out.println("\nSpieler 2 Panzerauswahl:"); // Panzerauswahl
 															// Spieler 2
+
 		HelpFunktion.showPanzertypen(TypenWert);
 
 		System.out.println("Anzahl Typ 1 Panzer:");
@@ -79,13 +85,15 @@ public class Panzergame {
 		PanzerlisteP2 = new Panzer[T1P2 + T2P2 + T3P2];
 		Hindernisliste = new Hindernis[HAnz];
 
-		Spielfeld Feld1 = new Spielfeld(y, x, PanzerlisteP1, PanzerlisteP2,
+		Spielfeld Feld1 = new Spielfeld(y, x, PanzerlisteP1, PanzerlisteP2,// ConsolenFeld
+																			// erzeugen
 				Hindernisliste);
-		FeldGrafik Fenster = new FeldGrafik(y, x, PanzerlisteP1, PanzerlisteP2,
+		FeldGrafik Fenster = new FeldGrafik(y, x, PanzerlisteP1, PanzerlisteP2,// Grafikfeld
+																				// erzeugen
 				Hindernisliste);
-
 		for (int i = 0; i < PanzerlisteP1.length; i++) { // Panzer Spieler 1
 															// erzeugen
+
 			Py = (int) (Math.random() * y);
 			Px = (int) (Math.random() * (x * 30 / 100));
 
