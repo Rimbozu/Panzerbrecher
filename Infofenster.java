@@ -10,13 +10,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Infofenster extends JFrame {
 
 	private JPanel jPanel1 = new JPanel(null, true);
+	private JTextField jTextField1 = new JTextField();
 	private JButton jButton1 = new JButton();
 	private JButton jButton2 = new JButton();
 	private JButton jButton3 = new JButton();
+	private JButton jButton4 = new JButton();
 
 	EventManager EM = null;
 	FeldGrafik FG = null;
@@ -25,6 +28,7 @@ public class Infofenster extends JFrame {
 	private Panzer sPanzer;
 	private int spieler;
 	private int Sx, Sy;
+	private String eingabewert = null;
 
 	public Infofenster() {
 		super("Panzerbrecher - Infofenster");
@@ -40,6 +44,10 @@ public class Infofenster extends JFrame {
 		jPanel1.setBounds(0, 0, this.getSize().width, this.getSize().height);
 		jPanel1.setOpaque(false);
 		cp.add(jPanel1);
+
+		jTextField1.setBounds(10, jPanel1.getHeight() - 80, 100, 40);
+		jTextField1.setText("60");
+		add(jTextField1);
 
 		jButton1.setBounds(610, 320, 160, 60);
 		jButton1.setText("Fahrzeug auswählen");
@@ -74,6 +82,17 @@ public class Infofenster extends JFrame {
 		jButton3.setVisible(false);
 		jPanel1.add(jButton3);
 
+		jButton4.setBounds(130, jPanel1.getHeight() - 80, 160, 40);
+		jButton4.setText("Wert akzeptieren");
+		jButton4.setMargin(new Insets(2, 2, 2, 2));
+		jButton4.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				eingabewert = jTextField1.getText();
+			}
+		});
+		jButton4.setVisible(true);
+		jPanel1.add(jButton4);
+
 		setBackground(Color.white);
 		setForeground(Color.black);
 		setVisible(true);
@@ -89,12 +108,21 @@ public class Infofenster extends JFrame {
 		addMouseListener(c); // registrierung fuer mouse-events
 	}
 
-	public void getPlayer(int i) {
+	public String getEingabewert() {
+		return eingabewert;
+	}
+
+	public void setEingabewert(String s) {
+		eingabewert = s;
+	}
+
+	public void setPlayer(int i) {
 		spieler = i;
 	}
 
 	public void writeString(String s, int a) {
 		st[a] = s;
+		repaint();
 	}
 
 	public void writeString(String[] s) {

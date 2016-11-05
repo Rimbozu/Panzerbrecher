@@ -14,74 +14,78 @@ public class Panzergame {
 		int[] TypenWert = new int[4];
 		int Restpunkte = 0;
 		int T1P1, T2P1, T3P1, T1P2, T2P2, T3P2;
+		String[] tstring = new String[20];
 
 		Hindernis[] Hindernisliste;
 		Panzer[] PanzerlisteP1, PanzerlisteP2;
 
-		IFenster.writeString("Willkommen zum Panzerspiel.", 0);
-		System.out.println("Willkommen zum Panzerspiel.\n");
+		tstring[0] = "Willkommen zum Panzerspiel.";
+		tstring[1] = "2 Spieler Spielmodus";
+		tstring[2] = "Wie Breit soll das Spielfeld sein?";
+		IFenster.writeString(tstring);
 
-		IFenster.writeString("2 Spieler Spielmodus", 1);
-		System.out.print("2 Spieler Spielmodus");
+		y = HelpFunktion.EingabeInt(5, 20, IFenster, 2); // Spielfeldgröße
+															// abfragen
 
-		System.out.println("\nWie Breit soll das Spielfeld sein? "); // Spielfeldgröße
-																		// abfragen
-		y = HelpFunktion.EingabeInt(5, 20, input);
-
-		System.out.println("Wie Lang soll das Spielfeld sein? ");
-		x = HelpFunktion.EingabeInt(y, 30, input);
+		IFenster.writeString("Wie Lang soll das Spielfeld sein?", 2);
+		x = HelpFunktion.EingabeInt(y, 30, IFenster, 2);
 
 		c = x * y;
 
-		System.out
-				.println("\nWie wie viele Panzerpunkte möchten sie haben? (wenig-viele)"); // Panzeranzahl
-																							// abfragen
-		PAnz = HelpFunktion.EingabeInt(1, c / 20, input);
+		IFenster.writeString(
+				"Wie wie viele Panzerpunkte möchten sie haben? (wenig-viele)",
+				2); // Panzeranzahl
+					// abfragen
+		PAnz = HelpFunktion.EingabeInt(1, c / 20, IFenster, 2);
 
-		System.out.println("\nWie wie viele Hindernisse möchten sie haben? "); // Hindernisse
-																				// abfragen
+		IFenster.writeString("\nWie wie viele Hindernisse möchten sie haben?",
+				2); // Hindernisse
+					// abfragen
 
-		HAnz = HelpFunktion.EingabeInt(0, c / 10, input);
+		HAnz = HelpFunktion.EingabeInt(0, c / 10, IFenster, 2);
 
 		TypenWert[0] = c;
 		TypenWert[1] = c / (PAnz * 2);
 		TypenWert[2] = TypenWert[1] * 2;
 		TypenWert[3] = TypenWert[1] / 10 * 15;
 
-		System.out.println("\nSpieler 1 Panzerauswahl:"); // Panzerauswahl
-															// Spieler 1
+		tstring[0] = "Spieler 1 Panzerauswahl:"; // Panzerauswahl Spieler 1
 
-		HelpFunktion.showPanzertypen(TypenWert);
-
-		System.out.println("Anzahl Typ 1 Panzer:");
-		T1P1 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input);
+		HelpFunktion.showPanzertypen(TypenWert, tstring);
+		IFenster.writeString(tstring);
+		IFenster.writeString("Anzahl Typ 1 Panzer:", 5);
+		T1P1 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1],
+				IFenster, 5);
 		Restpunkte = TypenWert[0] - T1P1 * TypenWert[1];
-		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
-		System.out.println("Anzahl Typ 2 Panzer:");
-		T2P1 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input);
+		IFenster.writeString(Restpunkte + " Punkte noch vorhanden", 5);
+		IFenster.writeString("Anzahl Typ 2 Panzer:", 6);
+		T2P1 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2],
+				IFenster, 6);
 		Restpunkte -= T2P1 * TypenWert[2];
-		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
-		System.out.println("Anzahl Typ 3 Panzer:");
+		IFenster.writeString(Restpunkte + " Punkte noch vorhanden", 5);
+		IFenster.writeString("Anzahl Typ 3 Panzer:", 6);
 		T3P1 = HelpFunktion.EingabeInt((Restpunkte) / TypenWert[3],
-				(Restpunkte) / TypenWert[3], input);
+				(Restpunkte) / TypenWert[3], IFenster, 6);
 
 		Restpunkte = TypenWert[0];
-		System.out.println("\nSpieler 2 Panzerauswahl:"); // Panzerauswahl
-															// Spieler 2
+		IFenster.writeString("Spieler 2 Panzerauswahl:", 0); // Panzerauswahl
+																// Spieler 2
 
 		HelpFunktion.showPanzertypen(TypenWert);
 
-		System.out.println("Anzahl Typ 1 Panzer:");
-		T1P2 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1], input);
+		IFenster.writeString("Anzahl Typ 1 Panzer:", 5);
+		T1P2 = HelpFunktion.EingabeInt(0, TypenWert[0] / TypenWert[1],
+				IFenster, 5);
 		Restpunkte -= T1P2 * TypenWert[1];
-		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
-		System.out.println("Anzahl Typ 2 Panzer:");
-		T2P2 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2], input);
+		IFenster.writeString(Restpunkte + " Punkte noch vorhanden", 5);
+		IFenster.writeString("Anzahl Typ 2 Panzer:", 6);
+		T2P2 = HelpFunktion.EingabeInt(0, (Restpunkte) / TypenWert[2],
+				IFenster, 6);
 		Restpunkte -= T2P2 * TypenWert[2];
-		System.out.println("\n" + Restpunkte + " Punkte noch vorhanden");
-		System.out.println("Anzahl Typ 3 Panzer:");
+		IFenster.writeString(Restpunkte + " Punkte noch vorhanden", 5);
+		IFenster.writeString("Anzahl Typ 3 Panzer:", 6);
 		T3P2 = HelpFunktion.EingabeInt((Restpunkte) / TypenWert[3],
-				(Restpunkte) / TypenWert[3], input);
+				(Restpunkte) / TypenWert[3], IFenster, 6);
 
 		PanzerlisteP1 = new Panzer[T1P1 + T2P1 + T3P1]; // 1. Inizialisieren
 		PanzerlisteP2 = new Panzer[T1P2 + T2P2 + T3P2];
@@ -204,7 +208,7 @@ public class Panzergame {
 				spieler = 2;
 			} // end of if-else
 
-			IFenster.getPlayer(spieler);
+			IFenster.setPlayer(spieler);
 			System.out.println("\nSpieler " + spieler + " ist an der Reihe.");
 			System.out
 					.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");

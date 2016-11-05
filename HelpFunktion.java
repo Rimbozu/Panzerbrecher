@@ -11,11 +11,47 @@ class HelpFunktion {
 				// TODO: handle exception
 				erg = 0;
 			}
-			if (erg >= min && erg <= max) break;
+			if (erg >= min && erg <= max)
+				break;
 
 			System.out.println("Eingegebener Wert nicht im Bereich.");
 			System.out.println("Neuen Wert bitte eingeben.");
 		} // end of while
+		return erg;
+	} // end of EingabeInt
+
+	public static int EingabeInt(int min, int max, Infofenster IFenster, int i) {
+		String s = IFenster.getEingabewert();
+		int erg = 0;
+		IFenster.writeString("Bereich von " + min + " - " + max + " : ", i + 1);
+		while (true) {
+			try {
+				s = IFenster.getEingabewert();
+				System.err.wait(500);
+			} catch (Exception e1) {
+				if (s != null) {
+					IFenster.writeString("Bereich von " + min + " - " + max
+							+ " : ", i + 1);
+					try {
+
+						erg = Integer.parseInt(IFenster.getEingabewert());
+					} catch (Exception e) {
+						// TODO: handle exception
+						erg = 0;
+						IFenster.setEingabewert(null);
+					}
+					if (erg >= min && erg <= max)
+						break;
+
+					IFenster.writeString("Eingegebener Wert nicht im Bereich.",
+							i + 2);
+					IFenster.writeString("Neuen Wert bitte eingeben.", i + 3);
+					IFenster.setEingabewert(null);
+				}
+			}
+
+		} // end of while
+		IFenster.setEingabewert(null);
 		return erg;
 	} // end of EingabeInt
 
@@ -49,7 +85,17 @@ class HelpFunktion {
 		System.out.println("Typ 2(" + Wert[2]
 				+ " Punkte): Schwerer Panzer, 15 HP, 10 DMG, Range 10");
 		System.out.println("Typ 3(" + Wert[3]
-				+ " Punkte): Panzerjaeger   ,  5 HP, 10 DMG, Range 15\n");
+				+ " Punkte): Panzerjaeger,  5 HP, 10 DMG, Range 15\n");
+	}
+
+	public static void showPanzertypen(int[] Wert, String[] s) {
+		s[1] = "Panzertypen auswählen (" + Wert[0] + " Punkte zu vergeben):";
+		s[2] = "Typ 1(" + Wert[1]
+				+ " Punkte): Normaler Panzer, 10 HP,  5 DMG, Range 10";
+		s[3] = "Typ 2(" + Wert[2]
+				+ " Punkte): Schwerer Panzer, 15 HP, 10 DMG, Range 10";
+		s[4] = "Typ 3(" + Wert[3]
+				+ " Punkte): Panzerjaeger,  5 HP, 10 DMG, Range 15\n";
 	}
 
 	public static int showPanzerliste(Panzer[] Liste, Scanner input) {
