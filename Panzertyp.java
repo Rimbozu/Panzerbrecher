@@ -56,8 +56,8 @@ class Panzertyp {
 			return "Schwerer Panzer, HP:  " + hp + ", DMG: " + dmg
 					+ ", Range: " + range;
 		case 2:
-			return "Panzerjäger    , HP:   " + hp + ", DMG: " + dmg
-					+ ", Range: " + range;
+			return "Panzerjäger, HP:   " + hp + ", DMG: " + dmg + ", Range: "
+					+ range;
 		default:
 			return "Typ nicht vorhanden";
 

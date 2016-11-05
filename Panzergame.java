@@ -9,9 +9,6 @@ public class Panzergame {
 		Infofenster IFenster = new Infofenster();
 		EventManager event = new EventManager();
 
-		IFenster.writeString("Willkommen zum Panzerspiel.", 0);
-		System.out.println("Willkommen zum Panzerspiel.\n");
-
 		boolean richtig = true;
 		int y = 0, x = 0, c, PAnz, HAnz, Py, Px, spiel = 0;
 		int[] TypenWert = new int[4];
@@ -20,6 +17,9 @@ public class Panzergame {
 
 		Hindernis[] Hindernisliste;
 		Panzer[] PanzerlisteP1, PanzerlisteP2;
+
+		IFenster.writeString("Willkommen zum Panzerspiel.", 0);
+		System.out.println("Willkommen zum Panzerspiel.\n");
 
 		IFenster.writeString("2 Spieler Spielmodus", 1);
 		System.out.print("2 Spieler Spielmodus");
@@ -204,6 +204,7 @@ public class Panzergame {
 				spieler = 2;
 			} // end of if-else
 
+			IFenster.getPlayer(spieler);
 			System.out.println("\nSpieler " + spieler + " ist an der Reihe.");
 			System.out
 					.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");

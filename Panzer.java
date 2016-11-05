@@ -6,7 +6,7 @@ class Panzer {
 
 	public Panzer(int y, int x, int player, int typ) {
 		pos = new Position(y, x);
-		this.player = player;
+		this.player = player; // 1, 2
 		this.typ = new Panzertyp(typ);
 	}
 

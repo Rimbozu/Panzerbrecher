@@ -46,16 +46,18 @@ public class EventManager implements KeyListener, MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		mSelectedPoint = null;
-		int mex = 0, mey = 0;
-		mex = e.getX();
-		mey = e.getY();
+		if (e.getSource() == feld) {
+			mSelectedPoint = null;
+			int mex = 0, mey = 0;
+			mex = e.getX();
+			mey = e.getY();
 
-		int x = ((mex - feld.links) / feld.feld);
-		int y = ((mey - feld.oben) / feld.feld);
+			int x = ((mex - feld.links) / feld.feld);
+			int y = ((mey - feld.oben) / feld.feld);
 
-		feld.FeldSelect(x, y);
-		info.FeldSelect(x, y);
+			feld.FeldSelect(x, y);
+			info.FeldSelect(x, y);
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
