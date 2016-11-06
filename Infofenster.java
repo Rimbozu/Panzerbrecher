@@ -16,18 +16,22 @@ public class Infofenster extends JFrame {
 
 	private JPanel jPanel1 = new JPanel(null, true);
 	private JTextField jTextField1 = new JTextField();
-	private JButton jButton1 = new JButton();
-	private JButton jButton2 = new JButton();
-	private JButton jButton3 = new JButton();
+	private JButton ButtonAuswahl = new JButton();
+	private JButton ButtonBewegen = new JButton();
+	private JButton ButtonSchieﬂen = new JButton();
 	private JButton jButton4 = new JButton();
 
 	EventManager EM = null;
 	FeldGrafik FG = null;
 	static Dimension screenDim, winDim;
-	public String[] st = new String[20];
+	private String[] st = new String[20];
+	private String[] st2 = new String[20];
 	private Panzer sPanzer;
 	private int spieler;
+	private int aktion;
+	private int auswahl;
 	private int Sx, Sy;
+	private Boolean helpbool = false;
 	private String eingabewert = null;
 
 	public Infofenster() {
@@ -49,38 +53,41 @@ public class Infofenster extends JFrame {
 		jTextField1.setText("60");
 		add(jTextField1);
 
-		jButton1.setBounds(610, 320, 160, 60);
-		jButton1.setText("Fahrzeug ausw‰hlen");
-		jButton1.setMargin(new Insets(2, 2, 2, 2));
-		jButton1.addMouseListener(new MouseAdapter() {
+		ButtonAuswahl.setBounds(610, 320, 160, 60);
+		ButtonAuswahl.setText("Fahrzeug ausw‰hlen");
+		ButtonAuswahl.setMargin(new Insets(2, 2, 2, 2));
+		ButtonAuswahl.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				jButton1Clicked(evt);
+				helpbool = true;
+				ButtonPanzerauswahl(evt);
 			}
 		});
-		jButton1.setVisible(false);
-		jPanel1.add(jButton1);
+		ButtonAuswahl.setVisible(false);
+		jPanel1.add(ButtonAuswahl);
 
-		jButton2.setBounds(610, 30, 160, 60);
-		jButton2.setText("Bewegen");
-		jButton2.setMargin(new Insets(2, 2, 2, 2));
-		jButton2.addMouseListener(new MouseAdapter() {
+		ButtonBewegen.setBounds(610, 30, 160, 60);
+		ButtonBewegen.setText("Bewegen");
+		ButtonBewegen.setMargin(new Insets(2, 2, 2, 2));
+		ButtonBewegen.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				jButtonClickedAction(evt, 1);
+				helpbool = true;
+				ButtonAction(evt, 0);
 			}
 		});
-		jButton2.setVisible(false);
-		jPanel1.add(jButton2);
+		ButtonBewegen.setVisible(false);
+		jPanel1.add(ButtonBewegen);
 
-		jButton3.setBounds(610, 110, 160, 60);
-		jButton3.setText("Schieﬂen");
-		jButton3.setMargin(new Insets(2, 2, 2, 2));
-		jButton3.addMouseListener(new MouseAdapter() {
+		ButtonSchieﬂen.setBounds(610, 110, 160, 60);
+		ButtonSchieﬂen.setText("Schieﬂen");
+		ButtonSchieﬂen.setMargin(new Insets(2, 2, 2, 2));
+		ButtonSchieﬂen.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				jButtonClickedAction(evt, 2);
+				helpbool = true;
+				ButtonAction(evt, 1);
 			}
 		});
-		jButton3.setVisible(false);
-		jPanel1.add(jButton3);
+		ButtonSchieﬂen.setVisible(false);
+		jPanel1.add(ButtonSchieﬂen);
 
 		jButton4.setBounds(130, jPanel1.getHeight() - 80, 160, 40);
 		jButton4.setText("Wert akzeptieren");
@@ -112,12 +119,42 @@ public class Infofenster extends JFrame {
 		return eingabewert;
 	}
 
+	public int getAktion() {
+		return aktion;
+	}
+
+	public int getAuswahl() {
+		return auswahl;
+	}
+
+	public boolean getHelpbool() {
+		return helpbool;
+	}
+
 	public void setEingabewert(String s) {
 		eingabewert = s;
 	}
 
+	public void setHelpbool() {
+		helpbool = false;
+	}
+
 	public void setPlayer(int i) {
 		spieler = i;
+	}
+
+	public void clearString(int a) {
+		for (int i = 0; i < a; i++) {
+			st[i] = "";
+		}
+		repaint();
+	}
+
+	public void clearString2(int a) {
+		for (int i = 0; i < a; i++) {
+			st2[i] = "";
+		}
+		repaint();
 	}
 
 	public void writeString(String s, int a) {
@@ -132,6 +169,11 @@ public class Infofenster extends JFrame {
 		repaint();
 	}
 
+	public void writeString2(String s, int a) {
+		st2[a] = s;
+		repaint();
+	}
+
 	public void FeldSelect(int x, int y) {
 		Sx = x;
 		Sy = y;
@@ -140,9 +182,10 @@ public class Infofenster extends JFrame {
 	public void Panzerinfo(Panzer[] p, int n) {
 		sPanzer = p[n];
 		if (spieler == sPanzer.getPlayer()) {
-			jButton1.setVisible(true);
+			ButtonAuswahl.setVisible(true);
+			auswahl = n;
 		} else {
-			jButton1.setVisible(false);
+			ButtonAuswahl.setVisible(false);
 		}
 		st[0] = "Spieler " + spieler + " ist an der Reihe.";
 		st[1] = "Dieser Panzer gehˆrt Spieler Nr." + sPanzer.getPlayer();
@@ -152,29 +195,32 @@ public class Infofenster extends JFrame {
 
 	}
 
-	public void jButton1Clicked(MouseEvent evt) {
+	public void ButtonPanzerauswahl(MouseEvent evt) {
 		st[0] = "Spieler " + spieler + " ist an der Reihe.";
 		st[1] = "Panzer erfolgreich ausgew‰hlt, Spieler " + sPanzer.getPlayer();
 		st[2] = "Was mˆchten Sie nun tuen:";
-		jButton2.setVisible(true);
-		jButton3.setVisible(true);
-
+		ButtonBewegen.setVisible(true);
+		ButtonSchieﬂen.setVisible(true);
+		ButtonAuswahl.setVisible(false);
 		repaint();
 	}
 
-	public void jButtonClickedAction(MouseEvent evt, int a) {
+	public void ButtonAction(MouseEvent evt, int a) {
+		clearString(10);
 		st[0] = "Panzer erfolgreich ausgew‰hlt, Spieler " + sPanzer.getPlayer();
+		st[2] = "Geben Sie eine Richtung an. (Numpad-Richtung)";
 		switch (a) {
-		case 1:
+		case 0:
 			st[1] = "Der Panzer wird sich bewegen.";
+			aktion = 0;
 			break;
-		case 2:
+		case 1:
 			st[1] = "Der Panzer wird schieﬂen.";
+			aktion = 1;
 			break;
 		}
-		st[2] = "";
-		jButton2.setVisible(false);
-		jButton3.setVisible(false);
+		ButtonBewegen.setVisible(false);
+		ButtonSchieﬂen.setVisible(false);
 
 		repaint();
 
@@ -189,6 +235,10 @@ public class Infofenster extends JFrame {
 
 		for (int i = 0; st[i] != null; i++) {
 			g.drawString(st[i], 20, 50 + (i * 30));
+		}
+
+		for (int i = 0; st2[i] != null; i++) {
+			g.drawString(st2[i], 120, 65 + (i * 30));
 		}
 
 	}

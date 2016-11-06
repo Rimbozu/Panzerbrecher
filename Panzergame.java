@@ -198,9 +198,10 @@ public class Panzergame {
 		Feld1.printLegende();
 
 		while (true) { // Spielbegin
-			boolean exit = false;
+			IFenster.clearString(10);
+			IFenster.clearString2(10);
 			spiel += 1;
-			int spieler, auswahl = 0;
+			int spieler, action, auswahl = 0;
 
 			if (spiel % 2 == 1) {
 				spieler = 1;
@@ -209,65 +210,83 @@ public class Panzergame {
 			} // end of if-else
 
 			IFenster.setPlayer(spieler);
-			System.out.println("\nSpieler " + spieler + " ist an der Reihe.");
-			System.out
-					.println("\nMit welchen Panzer möchten Sie die nächste aktion ausführen?");
-			System.out.println("Ihre Panzer:\n");
-
-			if (spiel % 2 == 1) {
-				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP1, input);
-			} else {
-				auswahl = HelpFunktion.showPanzerliste(PanzerlisteP2, input);
-			} // end of if-else
+			while (true) {
+				try {
+					System.err.wait(100);
+				} catch (Exception e) {
+					if (IFenster.getHelpbool()) {
+						auswahl = IFenster.getAuswahl();
+						IFenster.setHelpbool();
+						break;
+					}
+				}
+			}
+			System.out.println("Auswahlwert:" + auswahl);
+			// if (spiel % 2 == 1) {
+			// auswahl = HelpFunktion.showPanzerliste(PanzerlisteP1, input);
+			// } else {
+			// auswahl = HelpFunktion.showPanzerliste(PanzerlisteP2, input);
+			// } // end of if-else
 
 			System.out.println("Panzer bewegen(0) oder schießen(1)?"); // Aktionsparameter
-																		// eingeben
-			int action = HelpFunktion.EingabeInt(0, 1, input);
-			System.out.println("Richtung?(Numpad Richtig)");
-			int richtung = HelpFunktion.EingabeInt(1, 9, input);
-			System.out.println("Kraft? ");
 
-			if (spiel % 2 == 1) { // Spieler 1 Anweisungen
-				int kraft = HelpFunktion.EingabeInt(1,
-						PanzerlisteP1[auswahl - 1].getTyp().getRange(), input);
+			while (true) {
+				try {
+					System.err.wait(100);
+				} catch (Exception e) {
+					if (IFenster.getHelpbool()) {
+						action = IFenster.getAktion();
+						IFenster.setHelpbool();
+						break;
+					}
+				}
+			}
+
+			System.out.println("Richtung?(Numpad Richtig)");
+			int richtung = HelpFunktion.EingabeInt(1, 9, IFenster, 2);
+			IFenster.writeString("Richtung Erfoglreich eingegeben.", 3);
+			IFenster.writeString("Kraft eingeben.", 4);
+
+			if (spieler == 1) { // Spieler 1 Anweisungen
+				int kraft = HelpFunktion.EingabeInt(1, PanzerlisteP1[auswahl]
+						.getTyp().getRange(), IFenster, 4);
 				switch (action) {
 				case 0: // Panzer bewegen
 					Feld1.Panzerbewegen(PanzerlisteP1, PanzerlisteP2, auswahl,
-							richtung, kraft);
+							richtung, kraft, IFenster);
 					break;
 				case 1: // Panzer schießen
 					Feld1.Panzerschiessen(PanzerlisteP1, PanzerlisteP2,
-							auswahl, richtung, kraft);
+							auswahl, richtung, kraft, IFenster);
 					break;
 
 				} // end of switch
 			} else { // Spieler 2 Anweisungen
-				int kraft = HelpFunktion.EingabeInt(1,
-						PanzerlisteP2[auswahl - 1].getTyp().getRange(), input);
+				int kraft = HelpFunktion.EingabeInt(1, PanzerlisteP2[auswahl]
+						.getTyp().getRange(), IFenster, 4);
 				switch (action) {
 				case 0: // Panzer bewegen
 					Feld1.Panzerbewegen(PanzerlisteP2, PanzerlisteP1, auswahl,
-							richtung, kraft);
+							richtung, kraft, IFenster);
 					break;
 				case 1:
 					Feld1.Panzerschiessen(PanzerlisteP2, PanzerlisteP1,
-							auswahl, richtung, kraft);
+							auswahl, richtung, kraft, IFenster);
 					break;
 
 				} // end of switch
 			} // end of if-else
 
-			System.out.print("Aktuelles Spielfeld anzeigen? (ja=1): ");
-			int feld = HelpFunktion.EingabeInt(0, 1, input);
-
-			if (feld == 1) {
-				Feld1.print();
-			} // end of if
 			Fenster.repaint();
-			exit = HelpFunktion.TestSpielende(PanzerlisteP1);
-			exit = HelpFunktion.TestSpielende(PanzerlisteP2);
+			if (HelpFunktion.TestSpielende(PanzerlisteP1)) {
+				IFenster.clearString(10);
+				IFenster.writeString("Spiel beendet, Spieler 2 hat gewonnen", 0);
+				break;
+			} // end of if
 
-			if (exit) {
+			if (HelpFunktion.TestSpielende(PanzerlisteP2)) {
+				IFenster.clearString(10);
+				IFenster.writeString("Spiel beendet, Spieler 1 hat gewonnen", 0);
 				break;
 			} // end of if
 		} // end of while

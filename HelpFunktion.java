@@ -27,7 +27,7 @@ class HelpFunktion {
 		while (true) {
 			try {
 				s = IFenster.getEingabewert();
-				System.err.wait(500);
+				System.err.wait(100);
 			} catch (Exception e1) {
 				if (s != null) {
 					IFenster.writeString("Bereich von " + min + " - " + max
@@ -149,8 +149,6 @@ class HelpFunktion {
 				destroy += 1;
 			} // end of if
 			if (destroy == Liste.length) {
-				System.out.println("Der Gegner wurde besiegt. Spieler Nr."
-						+ Liste[0].getPlayer() + " hat gewonnen");
 				return true;
 			} // end of if
 		} // end of for

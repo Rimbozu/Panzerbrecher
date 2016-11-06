@@ -42,15 +42,16 @@ class Spielfeld {
 	}
 
 	public void Panzerbewegen(Panzer[] Panzerliste1, Panzer[] Panzerliste2,
-			int auswahl, int richtung, int kraft) {
+			int auswahl, int richtung, int kraft, Infofenster IFenster) {
 		int hi = 0;
 		int[] pg;
 		int[] pf;
 		Position ziel;
+		IFenster.clearString2(10);
 
 		for (int k = 1; k <= kraft; k++) {
-			ziel = new Position(Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosY(), Panzerliste1[auswahl - 1].target(richtung, k)
+			ziel = new Position(Panzerliste1[auswahl].target(richtung, k)
+					.getPosY(), Panzerliste1[auswahl].target(richtung, k)
 					.getPosX());
 			for (int i = 0; i < HListe.length; i++) {
 				if (ziel.getPosY() == HListe[i].getPos().getPosY()
@@ -62,13 +63,13 @@ class Spielfeld {
 
 			if (ziel.getPosY() < 0 || ziel.getPosY() >= getSeiteX()
 					|| ziel.getPosX() < 0 || ziel.getPosX() >= getSeiteY()) {
-				Panzerliste1[auswahl - 1].move(richtung, (k - 1));
-				Panzerliste1[auswahl - 1].getTyp().subHP(kraft / 2);
-				System.out
-						.println("Du bist gegen ein den Kartenrand gefahren und hast "
-								+ kraft / 2 + " Schaden genommen!");
-				if (Panzerliste1[auswahl - 1].getTyp().getHP() <= 0) {
-					System.out.println("Eigener Panzer wurde zerstört!");
+				Panzerliste1[auswahl].move(richtung, (k - 1));
+				Panzerliste1[auswahl].getTyp().subHP(kraft / 2);
+				IFenster.writeString2(
+						"Du bist gegen ein den Kartenrand gefahren und hast "
+								+ kraft / 2 + " Schaden genommen!", 0);
+				if (Panzerliste1[auswahl].getTyp().getHP() <= 0) {
+					IFenster.writeString2("Eigener Panzer wurde zerstört!", 1);
 				} // end of if
 				break;
 			} // end of if
@@ -81,70 +82,72 @@ class Spielfeld {
 																	// Test
 
 			if (hi > 0) { // Hindernis gerammt
-				Panzerliste1[auswahl - 1].move(richtung, hi - 1);
-				Panzerliste1[auswahl - 1].getTyp().subHP(kraft / 2);
-				System.out
-						.println("Du bist gegen ein Hindernis gefahren und hast "
-								+ kraft / 2 + " Schaden genommen!");
-				if (Panzerliste1[auswahl - 1].getTyp().getHP() <= 0) {
-					System.out.println("Eigener Panzer wurde zerstört!");
+				Panzerliste1[auswahl].move(richtung, hi - 1);
+				Panzerliste1[auswahl].getTyp().subHP(kraft / 2);
+				IFenster.writeString2(
+						"Du bist gegen ein Hindernis gefahren und hast "
+								+ kraft / 2 + " Schaden genommen!", 0);
+				if (Panzerliste1[auswahl].getTyp().getHP() <= 0) {
+					IFenster.writeString2("Eigener Panzer wurde zerstört!", 1);
 				} // end of if
 				break;
 			} // end of if
 
 			if (pg[0] > 0) { // Gegner gerammt
-				Panzerliste1[auswahl - 1].move(richtung, pg[0] - 1);
-				Panzerliste1[auswahl - 1].getTyp().subHP(kraft / 3);
+				Panzerliste1[auswahl].move(richtung, pg[0] - 1);
+				Panzerliste1[auswahl].getTyp().subHP(kraft / 3);
 				Panzerliste2[pg[1]].getTyp().subHP(kraft / 2);
-				System.out
-						.println("Du bist gegen einen gegnerischen Panzer gefahren und hast "
-								+ kraft / 3 + " Schaden genommen!");
-				System.out.println("Der gegnerische Panzer hat " + kraft / 2
-						+ " Schaden genommen!");
-				if (Panzerliste1[auswahl - 1].getTyp().getHP() <= 0) {
-					System.out.println("Eigener Panzer wurde zerstört!");
+				IFenster.writeString2(
+						"Du bist gegen einen gegnerischen Panzer gefahren und hast "
+								+ kraft / 3 + " Schaden genommen!", 0);
+				IFenster.writeString2("Der gegnerische Panzer hat " + kraft / 2
+						+ " Schaden genommen!", 1);
+				if (Panzerliste1[auswahl].getTyp().getHP() <= 0) {
+					IFenster.writeString2("Eigener Panzer wurde zerstört!", 2);
 				} // end of if
 				if (Panzerliste2[pg[1]].getTyp().getHP() <= 0) {
-					System.out.println("Gegnerischer Panzer wurde zerstört!");
+					IFenster.writeString2(
+							"Gegnerischer Panzer wurde zerstört!", 2);
 				} // end of if
 				break;
 			} // end of if
 
 			if (pf[0] > 0) { // eigenen gerammt
-				Panzerliste1[auswahl - 1].move(richtung, pf[0] - 1);
-				Panzerliste1[auswahl - 1].getTyp().subHP(kraft / 3);
+				Panzerliste1[auswahl].move(richtung, pf[0] - 1);
+				Panzerliste1[auswahl].getTyp().subHP(kraft / 3);
 				Panzerliste1[pf[1]].getTyp().subHP(kraft / 2);
-				System.out
-						.println("Du bist gegen einen eigenen Panzer gefahren und hast "
-								+ kraft / 3 + " Schaden genommen!");
-				System.out.println("Der andere Panzer hat " + kraft / 2
-						+ " Schaden genommen!");
-				if (Panzerliste1[auswahl - 1].getTyp().getHP() <= 0) {
-					System.out.println("Eigener Panzer wurde zerstört!");
+				IFenster.writeString2(
+						"Du bist gegen einen eigenen Panzer gefahren und hast "
+								+ kraft / 3 + " Schaden genommen!", 0);
+				IFenster.writeString2("Der andere Panzer hat " + kraft / 2
+						+ " Schaden genommen!", 1);
+				if (Panzerliste1[auswahl].getTyp().getHP() <= 0) {
+					IFenster.writeString2("Eigener Panzer wurde zerstört!", 2);
 				} // end of if
 				if (Panzerliste1[pf[1]].getTyp().getHP() <= 0) {
-					System.out.println("Anderer Panzer wurde zerstört!");
+					IFenster.writeString2("Anderer Panzer wurde zerstört!", 2);
 				} // end of if
 				break;
 			} // end of if
 
 			if (k == kraft) { // nichts gerammt
-				Panzerliste1[auswahl - 1].move(richtung, kraft);
+				Panzerliste1[auswahl].move(richtung, kraft);
 				break;
 			} // end of if
 		} // end of for
 	}
 
 	public void Panzerschiessen(Panzer[] Panzerliste1, Panzer[] Panzerliste2,
-			int auswahl, int richtung, int kraft) {
+			int auswahl, int richtung, int kraft, Infofenster IFenster) {
 		int hi = 0;
 		int[] pg;
 		int[] pf;
 		Position ziel;
+		IFenster.clearString2(10);
 
 		for (int k = 1; k <= kraft; k++) {
-			ziel = new Position(Panzerliste1[auswahl - 1].target(richtung, k)
-					.getPosY(), Panzerliste1[auswahl - 1].target(richtung, k)
+			ziel = new Position(Panzerliste1[auswahl].target(richtung, k)
+					.getPosY(), Panzerliste1[auswahl].target(richtung, k)
 					.getPosX());
 
 			for (int i = 0; i < HListe.length; i++) { // Hinderniss Test
@@ -166,47 +169,47 @@ class Spielfeld {
 
 			if (ziel.getPosY() < 0 || ziel.getPosY() >= getSeiteX()
 					|| ziel.getPosX() < 0 || ziel.getPosX() >= getSeiteY()) {
-				System.out.println("Du hast gegen den Kartenrand geschossen!");
+				IFenster.writeString2(
+						"Du hast gegen den Kartenrand geschossen!", 0);
 				break;
 			} // end of if
 
 			if (hi > 0) { // Hindernis getroffen
-				System.out.println("Du hast gegen ein Hindernis geschossen!");
+				IFenster.writeString2(
+						"Du hast gegen ein Hindernis geschossen!", 0);
 				break;
 			} // end of if
 
 			if (pg[0] > 0) { // Gegner getroffen
-				Panzerliste2[pg[1]].getTyp()
-						.subHP(Panzerliste1[auswahl - 1].getTyp().getDMG() * k
-								/ kraft);
+				Panzerliste2[pg[1]].getTyp().subHP(
+						Panzerliste1[auswahl].getTyp().getDMG() * k / kraft);
 
-				System.out
-						.println("\nDu hast einen gegnerischen Panzer getroffen und "
-								+ Panzerliste1[auswahl - 1].getTyp().getDMG()
-								* k / kraft + " Schaden gemacht.");
+				IFenster.writeString2(
+						"Du hast einen gegnerischen Panzer getroffen und "
+								+ Panzerliste1[auswahl].getTyp().getDMG() * k
+								/ kraft + " Schaden gemacht.", 0);
 				if (Panzerliste2[pg[1]].getTyp().getHP() <= 0) {
-					System.out.println("Der Panzer wurde zerstört!");
+					IFenster.writeString2("Der Panzer wurde zerstört!", 1);
 				} // end of if
 				break;
 			} // end of if
 
 			if (pf[0] > 0) { // eigenen getroffen
-				Panzerliste2[pf[1]].getTyp()
-						.subHP(Panzerliste1[auswahl - 1].getTyp().getDMG() * k
-								/ kraft);
+				Panzerliste2[pf[1]].getTyp().subHP(
+						Panzerliste1[auswahl].getTyp().getDMG() * k / kraft);
 
-				System.out
-						.println("\nDu hast einen gegnerischen Panzer getroffen und "
-								+ Panzerliste1[auswahl - 1].getTyp().getDMG()
-								* k / kraft + " Schaden gemacht.");
+				IFenster.writeString2(
+						"Du hast einen gegnerischen Panzer getroffen und "
+								+ Panzerliste1[auswahl].getTyp().getDMG() * k
+								/ kraft + " Schaden gemacht.", 0);
 				if (Panzerliste1[pf[1]].getTyp().getHP() <= 0) {
-					System.out.println("Der Panzer wurde zerstört!");
+					IFenster.writeString2("Der Panzer wurde zerstört!", 1);
 				} // end of if
 				break;
 			} // end of if
 
 			if (k == kraft) { // nichts getroffen
-				System.out.println("\nDu hast nichts getroffen.");
+				IFenster.writeString2("Du hast nichts getroffen.", 0);
 				break;
 			} // end of if
 		} // end of for
